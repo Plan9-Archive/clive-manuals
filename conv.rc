@@ -1,0 +1,12 @@
+#!/bin/rc
+for(d in $dirs)
+{
+	cd $d
+	files=`{ls}
+	for(f in $files)
+	{
+		n=`{echo $f | awk '{split($1, a, "\.");print(a[1])}'}
+		html2ms < $f > $n^.^$d
+	}
+	cd ..
+}

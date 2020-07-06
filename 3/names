@@ -1,0 +1,207 @@
+NAMES(3): file names and predicates
+.LP
+.br
+\l'5i'
+.br
+.LP
+.SH
+SYNOPSYS
+.LP
+.LP
+\fC
+.DS L
+
+    path,predicate
+    
+.DE
+\fR
+.LP
+.LP
+.SH
+DESCRIPTION
+.LP
+Many commands accept file names as arguments. A path name is\fC /\fR to
+refer to the root of the name space followed by one or more components
+(naming directories, except the last which might name a file). Path names
+not starting with\fC /\fR are understood as suffixes of the current directory
+(\fC.\fR). The name\fC ..\fR refers to the parent of the previous path
+(or the current directory if none). The parent of\fC /\fR is\fC /\fR itself.
+.LP
+In most cases, file names given to commands are not just\fI path names\fR.
+Usually, they are a combination of a path name and a predicate separated
+by a comma (\fC,\fR) character.
+.LP
+This combination is understood as a spec to search for and find matching
+files; commands rely on the [clive/zx(2)]\fC Finder\fR interface to issue
+the find request, and most of the times, they do so using the [clive/cmd(2)]
+pakcage.
+.LP
+The file search always starts at the path name given before the comma,
+and proceeds within the subtree rooted there. All files matching the predicate
+are selected and processed by the command considered.
+.LP
+An empty predicate is considered\fC true\fR, which means it selects all
+files within the subtree. For example,
+.LP
+\fC
+.DS L
+
+    lf .,
+    
+.DE
+\fR
+.LP
+lists all files under the current directory, including also all directories
+and the current directory.
+.LP
+If the predicate is not supplied (i.e., there is no comma '\fC,\fR' character),
+then only the name supplied is selected. For example
+.LP
+\fC
+.DS L
+
+    lf . | ch 0775
+    
+.DE
+\fR
+.LP
+changes the mode of the current directory, but
+.LP
+\fC
+.DS L
+
+    lf ., | ch 0775
+    
+.DE
+\fR
+.LP
+changes the mode for all files rooted at\fC .\fR, including\fC .\fR.
+.LP
+An empty name is understood as '\fC.\fR'. Thus,
+.LP
+\fC
+.DS L
+
+    lf , | ch 0775
+    
+.DE
+\fR
+.LP
+is exactly the same command.
+.LP
+A predicate is a boolean expression operating on directory entry attributes
+written in textual format. Besides the directory attribute names, the special
+name\fC depth\fR can be used to refer to the file depth in the tree rooted
+at the path used in the query. See dir(3) for a description of directory
+attributes.
+.LP
+The following expressions can be used as predicates:
+.LP
+\fC true\fR always evaluates to true\fC false\fR always evaluates to false\fC
+name=value\fR compares for equality the value of the attribute\fC name\fR
+with\fC value\fR as a string.\fC =value\fR the same thing using the\fC
+path\fR attribute if\fC value\fR starts with\fC /\fR, and the\fC name\fR
+attribute otherwise.\fC d\fR is understood as\fC type=d\fR, and the same
+goes for\fC -\fR and\fC c\fR.\fC name==value\fR compares the value of the
+attribute\fC name\fR with\fC value\fR as a number.\fC name!=value\fR compares
+for inequality the value of the attribute\fC name\fR with\fC value\fR as
+a string. Prunes the search if the attribute is\fC name\fR or\fC path\fR
+and matches the value.\fC name~exp\fR matches\fC exp\fR against the value
+of the attribute\fC name\fR using globbing.\fC ~exp\fR the same thing using
+the\fC path\fR attribute if\fC value\fR contains\fC /\fR, and the\fC name\fR
+attribute otherwise.\fC name~~regexp\fR matches\fC regexp\fR against the
+value of the attribute\fC name\fR. Prunes the search if the attribute is\fC
+name\fR or\fC path\fR and matches the value.\fC ~~regexp\fR the same thing
+using the\fC path\fR attribute if\fC value\fR starts with\fC /\fR, and
+the\fC name\fR attribute otherwise.\fC name>value\fR compares (as a number)
+for greater-than the value of the attribute\fC name\fR with\fC value\fR.\fC
+name>=value\fR compares (as a number) for greater-or-equal-to the value
+of the attribute\fC name\fR with\fC value\fR.\fC name<value\fR compares
+(as a number) for less-than the value of the attribute\fC name\fR with\fC
+value\fR.\fC name<=value\fR compares (as a number) for less-or-equal-to
+the value of the attribute\fC name\fR with\fC value\fR.\fI number\fR is
+understood as\fC depth<=\fR\fInumber\fR\fC prune\fR fails and prunes the
+search when evaluated (child files are ignored).
+.LP
+Also, if\fC p1\fR and\fC p2\fR are predicates, the following expressions
+can be used:
+.LP
+\fC p1&p2\fR true if both predicates are true. If the first is false the
+second is not evaluated.\fC p1|p2\fR true if one of the predicates is true.
+If the first is true the second is not evaluated.\fC !p1\fR true if the
+predicate is false. If\fC p1\fR is comparing for equality or matching the\fC
+name\fR or\fC path\fR attributes and\fC p1\fR is true, the search is pruned
+(and the predicate is false).\fC (p1)\fR exactly like\fC p1\fR (but useful
+to change the evaluation order).
+.LP
+Some operators have other names (as aliases) as described now. Although
+the aliases are preferred over the original names to save quotes in the
+shell, the original names can always be typed easily in most keyboards.
+.IP \(bu
+The operator '\fC,\fR' is an alias of '\fC&\fR'.
+.IP \(bu
+The operator '\fC:\fR' is an alias of '\fC |\fR '
+.IP \(bu
+The operator '\fC≈\fR' is an alias of '\fC~~\fR'.
+.IP \(bu
+The operator '\fC≠\fR' is an alias of '\fC!=\fR'.
+.IP \(bu
+The operator '\fC≡\fR' is an alias of '\fC==\fR'.
+.IP \(bu
+The operator '\fC≤\fR' is an alias of '\fC<=\fR'.
+.IP \(bu
+The operator '\fC≥\fR' is an alias of '\fC>=\fR'.
+.LP
+.LP
+.LP
+.LP
+.LP
+.LP
+.LP
+.LP
+The\fI not\fR operation has the higher precedence, then\fI and\fR and then\fI
+or\fR. Evaluation is left to right.
+.LP
+.SH
+EXAMPLES
+.LP
+Similar to\fC ls /*/*/foo\fR in UNIX:
+.LP
+\fC
+.DS L
+
+    l /,path~/*/*/foo
+    
+.DE
+\fR
+.LP
+.LP
+Similar to\fC find . -name '*.go'\fR in UNIX:
+.LP
+\fC
+.DS L
+
+    l ,~*.go
+    
+.DE
+\fR
+.LP
+.LP
+.SH
+SEE ALSO
+.LP
+.IP \(bu
+intro(1)
+.IP \(bu
+dir(3)
+.LP
+.LP
+.LP
+.br
+\l'5i'
+.br
+.LP
+\fB User's manual.\fR\fB Section 3.\fR Copyright © LSUB 2014-2016
+.br
+.br
+

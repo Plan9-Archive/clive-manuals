@@ -1,0 +1,99 @@
+RMF(1): remove files
+.LP
+.br
+\l'5i'
+.br
+.LP
+.SH
+USAGE
+.LP
+.LP
+\fC
+.DS L
+
+    usage: rmf [-Dafnv] {file}
+        -D: debug
+        -a: remove all
+        -f: quiet, called 'force' in unix
+        -n: dry run; report removes but do not do them
+        -v: verbose; print the calls made in the order they are made.
+    
+.DE
+\fR
+.LP
+.LP
+.SH
+DESCRIPTION
+.LP
+\fI Rmf\fR removes files in the input or arguments. Note that this implies
+that it can remove whole trees. The\fC -a\fR flag further implies to remove
+subtrees for each directory entry found in the input, but note that using
+'\fC,\fR' as an argument removes a full tree. The\fC -a\fR flag is still
+useful when using the predicate to select the root of subtrees to be removed.
+.LP
+You are adviced to use first\fC lf\fR and then edit the command to be\fC
+rmf\fR to be sure of what you are going to remove.
+.LP
+.SH
+EXAMPLES
+.LP
+Remove everything (do not try this at home):
+.LP
+\fC
+.DS L
+
+    ; rmf /,
+    
+.DE
+\fR
+.LP
+or perhaps
+.LP
+\fC
+.DS L
+
+    ; lf /, | rmf
+    
+.DE
+\fR
+.LP
+.LP
+Remove all Ada source files from\fC /src\fR, a very useful command:
+.LP
+\fC
+.DS L
+
+    ; lf '/src,~\&\\.ad[bs]$' | rmf
+    
+.DE
+\fR
+.LP
+.LP
+Using the same example, print one line per file remove but do not remove
+anything:
+.LP
+\fC
+.DS L
+
+    ; rmf -n '/src,~\&\\.ad[bs]$'
+    
+.DE
+\fR
+.LP
+.LP
+.SH
+SOURCE
+.LP
+.IP \(bu
+\fC/zx/sys/src/clive/cmd/rmf\fR
+.LP
+.LP
+.LP
+.br
+\l'5i'
+.br
+.LP
+\fB User's manual.\fR\fB Section 1.\fR Copyright © LSUB 2014-2016
+.br
+.br
+

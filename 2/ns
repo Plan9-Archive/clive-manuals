@@ -1,0 +1,108 @@
+
+SYNOPSYS
+
+import "clive/ns"
+
+const Repl Flag = iota ...
+func AddLfsPath(path string, fs zx.Fs)
+func DirFs(d zx.Dir) (zx.Fs, error)
+func Lfs(path string) (zx.Fs, string, string)
+func New() *NS
+func Parse(s string) (*NS, error)
+type Binder interface { ... }
+type Flag int
+type NS struct { ... }
+    func New() *NS
+    func Parse(s string) (*NS, error)
+
+DESCRIPTION
+
+name spaces.
+
+A name space goes from a textual representation of paths and directory
+entries (perhaps referring to a remote mounted dir) to a finder interface.
+
+It's a prefix table where the longest prefix wins. There are no binds and no
+unions.
+
+CONSTANTS
+
+TYPES
+
+type Binder interface {
+	// Add an entry at the given d["path"] prefix for the given directory entry.
+	// If flag is Before or After, previous contents of the path are preserved and
+	// the new entry is added before or after them.
+	// Despite Repl mounts, other mounts that are suffixes of the given prefix
+	// remain mounted.
+	Mount(d zx.Dir, flag Flag) error
+
+	// Remove entries for the given path prefix (all if d is nil, or those matching
+	// them.
+	// Other mounts that are suffixes of the given prefix
+	// remain mounted.
+	Unmount(name string, d ...zx.Dir) error
+}
+    A binder is a name space that binds prefixes to directory entries. The
+    implementor usually supports the Finder interface to navigate the resulting
+    tree.
+
+type Flag int
+    Mount flags
+
+const (
+	Repl   Flag = iota // replace previous mounted dirs.
+	Before             // mount before previous mounted dirs.
+	After              // mount after previous mounted dirs.
+)
+
+func (f Flag) String() string
+
+type NS struct {
+	dbg.Flag
+	Verb bool // verbose debug diags
+	// contains filtered or unexported fields
+}
+    A clive name space tree. It implements both the binder and finder
+    interfaces.
+
+func New() *NS
+    Create a new empty name space. It has a single entry for an empty directory
+    mounted at "/"
+
+func Parse(s string) (*NS, error)
+    Recreate a name space provided its printed representation. It accepts the
+    special line formats
+
+    path addr
+    path filepath
+
+    to dial the given addr or use the given lfs filepath and mount it at path.
+
+    A full addr is proto!net!host!port!tree!path, where proto can be zx|lfs. For
+    lfs, the addr is of the form lfs!lfsroot!path zx is implied it no proto is
+    given. Any suffix components may be absent so we accept
+
+    localhost!zx	-> zx!tcp!localhost!zx!main!/
+    unix!localhost!zx	-> zx!unix!localhost!zx!main!/
+    zx!unix!localhost!zx
+    unix!localhost!zx!other
+    ...
+
+func (ns *NS) Dup() *NS
+    Create a copy of the ns.
+
+func (ns *NS) Entries() []zx.Dir
+    Return an array of mount entries for ns. The "path" attribute in them
+    indicates the prefix where they are mounted.
+
+func (ns *NS) Find(name string, fpred string, spref, dpref string, depth0 int) 
+.LP
+\fBUser's manual, 2nd ed. Section 2\fR
+
+	
+.DE
+Copyright © LSUB 2014-2016
+.br
+.br
+

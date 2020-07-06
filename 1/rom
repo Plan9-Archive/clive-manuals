@@ -1,0 +1,63 @@
+ECO(1): rom
+.LP
+.br
+\l'5i'
+.br
+.LP
+.SH
+USAGE
+.LP
+.LP
+\fC
+.DS L
+
+    usage: rom [-Du] [-n name] {file}
+        -D: debug
+        -n name: use this name as the package name
+        -u: use unix out
+    
+.DE
+\fR
+.LP
+.LP
+.SH
+DESCRIPTION
+.LP
+\fI Rom\fR generates a giant Go map for files in the input. It is used
+to include external data files into Clive servers so they can work without
+requiring external file systems.
+.LP
+The generated map is called\fC rom.Files\fR and goes from the paths to
+the byte arrays for file contents.
+.LP
+.SH
+EXAMPLES
+.LP
+Generate a file that contains all javascript files under the current directory
+in the rom map, and install it as a package
+.LP
+\fC
+.DS L
+
+    % rom ,~*.js > js.go
+    % Go install
+    
+.DE
+\fR
+.LP
+.LP
+.SH
+SOURCE
+.LP
+.IP \(bu
+\fC/zx/sys/src/clive/cmd/rom\fR
+.LP
+.LP
+.br
+\l'5i'
+.br
+.LP
+\fB User's manual.\fR\fB Section 1.\fR Copyright © LSUB 2014-2016
+.br
+.br
+

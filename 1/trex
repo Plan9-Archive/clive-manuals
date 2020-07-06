@@ -1,0 +1,89 @@
+TREX(1): translate expressions
+.LP
+.br
+\l'5i'
+.br
+.LP
+.SH
+USAGE
+.LP
+.LP
+\fC
+.DS L
+
+    usage: trex [-Dcfglrstux] to | {from to}
+        -D: debug
+        -c: translate to capitals (upper case)
+        -f: match expressions in full files
+        -g: change globally (as many times as can be done per line)
+        -l: translate to lower case
+        -r: interpret replacements as rune sets
+        -s: handle args as strings and not rexps.
+        -t: translate to title case
+        -u: use unix out
+        -x: match against each extracted text (eg., out from gr -x)
+    
+.DE
+\fR
+.LP
+.LP
+.SH
+DESCRIPTION
+.LP
+\fI Trex\fR translates expressions in the input.
+.LP
+When given\fC from\fR and\fC to\fR it translates expressions starting at\fC
+from\fR and ending at\fC to\fR, for each pair given. Under flag\fC -s\fR
+both expressions are considered strings, and flag\fC -r\fR makes them behave
+like in the venerable\fC tr\fR command in UNIX. An empty (but not missing)
+'\fCto\fR' implies removal of the matched text in this case.
+.LP
+Flags\fC -x\fR and\fC -f\fR are similar to those in\fC gr\fR and are used
+to preserve matching within data portions as selected by previous\fC gr\fR
+calls and to perform the matching against the full input text.
+.LP
+There is no flag to delete, just replace with nothing.
+.LP
+.SH
+EXAMPLES
+.LP
+Translate digits to letters starting at A:
+.LP
+\fC
+.DS L
+
+    ; eco A01Z | trex -u -r 0-9 A-x
+    AABZ
+    
+.DE
+\fR
+.LP
+.LP
+Make a title
+.LP
+\fC
+.DS L
+
+    ; eco lord of the rings | trex -ut
+    Lord Of The Rings
+    
+.DE
+\fR
+.LP
+.LP
+.SH
+SOURCE
+.LP
+.IP \(bu
+\fC/zx/sys/src/clive/cmd/trex\fR
+.LP
+.LP
+.LP
+.br
+\l'5i'
+.br
+.LP
+\fB User's manual.\fR\fB Section 1.\fR Copyright © LSUB 2014-2016
+.br
+.br
+

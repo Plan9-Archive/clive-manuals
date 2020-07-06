@@ -1,0 +1,42 @@
+GP(1): grep files for predicates
+.LP
+.br
+\l'5i'
+.br
+.LP
+.SH
+USAGE
+.LP
+.LP
+\fC
+.DS L
+
+    usage: gp [-Du] {pred}
+        -D: debug
+        -u: use unix out
+    
+.DE
+\fR
+.LP
+.LP
+.SH
+DESCRIPTION
+.LP
+\fI Gp\fR greps the input for predicates on file metadata. It filters input
+for files matching the predicates given.
+.LP
+.SH
+SOURCE
+.LP
+.IP \(bu
+\fC/zx/sys/src/clive/cmd/gp\fR
+.LP
+.LP
+.br
+\l'5i'
+.br
+.LP
+\fB User's manual.\fR\fB Section 1.\fR Copyright © LSUB 2014-2016
+.br
+.br
+

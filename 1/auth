@@ -1,0 +1,67 @@
+AUTH(1): setup zx authentication
+.LP
+.br
+\l'5i'
+.br
+.LP
+.SH
+USAGE
+.LP
+.LP
+\fC
+.DS L
+
+    usage: auth [-f] [-d adir] name user secret [group...]
+        -d adir: clive auth dir
+        -f: force write of key file when file already exists
+    
+.DE
+\fR
+.LP
+.LP
+.SH
+DESCRIPTION
+.LP
+\fI auth\fR initializes the zx key file to authenticate remote connections,
+both for servers and clients.
+.LP
+This is a temporary aid and the command will change in the future to become
+a real tool that can connect to an authentication service to change passwords.
+As of now, it must be executed in the machine where the secret resides
+to initialize it.
+.LP
+.SH
+EXAMPLE
+.LP
+Create a secret for user nemo and group elf for the default auth domain.
+This must run on both the file server and the machines dialing to it.
+.LP
+\fC
+.DS L
+
+    ; auth default nemo secret.Pass elf
+    
+.DE
+\fR
+.LP
+.LP
+.SH
+SOURCE
+.LP
+.IP \(bu
+\fC/zx/sys/src/clive/cmd/auth\fR
+.LP
+.LP
+.SH
+BUGS
+.LP
+Should read the key from the user's terminal and be safer.
+.LP
+.br
+\l'5i'
+.br
+.LP
+\fB User's manual.\fR\fB Section 1.\fR Copyright © LSUB 2014-2016
+.br
+.br
+

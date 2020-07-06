@@ -1,0 +1,80 @@
+HIST(1): dump history
+.LP
+.br
+\l'5i'
+.br
+.LP
+.SH
+USAGE
+.LP
+.LP
+\fC
+.DS L
+
+    usage: hist [-Dacdflu] [-p dumpdir] [-w date] [-x cmd] {file}
+        -D: debug
+        -a: list all copies that differ, not just the last one.
+        -c: copy the file from the dump
+        -d: print file differences
+        -f: force search past file removals
+        -l: produce a long listing (or print just the name)
+        -p dumpdir: path to dump (default is /dump or /u/dump)
+        -u: unix IO
+        -w date: backward search start time (default is now)
+        -x cmd: print lines to execute this command between versions
+    
+.DE
+\fR
+.LP
+.LP
+.SH
+DESCRIPTION
+.LP
+\fI hist\fR digs in the dump to list file history. By default it prints
+the path in the dump for the last version of the input files.
+.LP
+The dump is assumed to be in\fC /dump\fR or\fC /u/dump\fR unless flag\fC
+-p\fR tells otherwise. The only dumped trees known are\fC /zx\fR, dumped
+at\fC /dump\fR, and\fC /u/*\fR directories, dumped at\fC /u/dump\fR.
+.LP
+.SH
+EXAMPLE
+.LP
+Locate in the dump all go sources for files under the current directory:
+.LP
+\fC
+.DS L
+
+    ; lf ,~*.go | hist
+    
+.DE
+\fR
+.LP
+.LP
+Print all recorded changes made to\fC hist.go\fR:
+.LP
+\fC
+.DS L
+
+    ; hist -ad hist.go
+    
+.DE
+\fR
+.LP
+.LP
+.SH
+SOURCE
+.LP
+.IP \(bu
+\fC/zx/sys/src/clive/cmd/hist\fR
+.LP
+.LP
+.LP
+.br
+\l'5i'
+.br
+.LP
+\fB User's manual.\fR\fB Section 1.\fR Copyright © LSUB 2014-2016
+.br
+.br
+

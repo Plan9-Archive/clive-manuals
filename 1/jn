@@ -1,0 +1,89 @@
+JN(1): join fields
+.LP
+.br
+\l'5i'
+.br
+.LP
+.SH
+USAGE
+.LP
+.LP
+\fC
+.DS L
+
+    usage: jn [-1Du] [-i isep] [-k1 nb] [-k2 nb] [-o osep] {file}
+        -1: fields are separated by one run of the separator string
+        -D: debug
+        -i isep: input field separator character(s) or string under -1
+        -k1 nb: join on this field nb. for 1st file
+        -k2 nb: join on this field nb. for 2nd and following files
+        -o osep: output field delimiter string
+        -u: unix IO
+    
+.DE
+\fR
+.LP
+.LP
+.SH
+DESCRIPTION
+.LP
+\fI Jn\fR joins the lines in input files. Each line is considered as a
+record, with field numbers counting from 1. The join combines records with
+the same key in all files. If a key is found in one file, a line is generated
+for it even if it is not found in any other file. Files need not to be
+sorted. By default, the first field is used as the key. Flags\fC -k1\fR
+and\fC -k2\fR can be used to set a different key for the first file and
+for all other files.
+.LP
+By default the field separator is a run of blanks. Flag\fC -F\fR changes
+the set of runes used as field separators to its argument.
+.LP
+Flag\fC -1\fR indicates that fields are separated exactly by one instance
+of the separator string. Such string defaults to a tabulator character
+in this case, unless\fC -F\fR says otherwise.
+.LP
+The output is printed sorted on the key field. Output fields are separated
+by default using a tab character or the\fC sep\fR string if\fC -1\fR is
+used.
+.LP
+.SH
+EXAMPLES
+.LP
+Join the lines of\fC ids\fR and all\fC grade\fR files using the first field
+in\fC ids\fR and the second in others. Generate output fields separated
+by a\fC :\fR character:
+.LP
+\fC
+.DS L
+
+    ; lf -g ids ,~grade | jn -u -k2 2 -o: f1 f2
+    
+.DE
+\fR
+.LP
+.LP
+.SH
+SOURCE
+.LP
+.IP \(bu
+\fC/zx/sys/src/clive/cmd/jn\fR
+.LP
+.LP
+.SH
+SEE ALSO
+.LP
+.IP \(bu
+flds(1) to select fields in output.
+.IP \(bu
+lns(1) to select lines in output.
+.LP
+.LP
+.LP
+.br
+\l'5i'
+.br
+.LP
+\fB User's manual.\fR\fB Section 1.\fR Copyright © LSUB 2014-2016
+.br
+.br
+

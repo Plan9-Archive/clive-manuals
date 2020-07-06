@@ -1,0 +1,58 @@
+CERTS(3): certificates for authentication
+.LP
+.br
+\l'5i'
+.br
+.LP
+.SH
+DESCRIPTION
+.LP
+Clive uses public key encryption in order to authenticate clients and servers.
+In the server machine, the server's private key must be stored in\fC $HOME/.ssh/server.key\fR
+(PEM encoding) and the client's autosigned X.509 certificate must be stored
+in\fC $HOME/.ssh/client.pem\fR. In the client machine, the private key
+must be stored in\fC $HOME/.ssh/client.key\fR and the server's certificate
+must be stored in\fC $HOME/.ssh/server.pem\fR.
+.LP
+The private key and the certificate with the public key can be generated
+with\fC openssl\fR. For example, in the server:
+.LP
+.LP
+\fC
+.DS L
+
+    ; cd $HOME/.ssh
+    ; openssl req -new -nodes -x509 -out server.pem \&\\
+        -keyout server.key -days 500 -subj \&\\
+        '/C=DE/ST=NRW/L=Earth/O=Random \&\\
+        Company/OU=IT/CN=lsub.org/emailAddress=dont@mail.me'
+    
+.DE
+\fR
+.LP
+.LP
+The web(1) command uses\fC /zx/lib/webkey.pem\fR for the private key and\fC
+/zx/lib/webcert.pem\fR for the certificate, for TLS connections.
+.LP
+.SH
+SEE ALSO
+.LP
+.IP \(bu
+xzx(1)
+.IP \(bu
+zxfuse(1)
+.IP \(bu
+auth(1)
+.LP
+.LP
+.LP
+.LP
+.LP
+.br
+\l'5i'
+.br
+.LP
+\fB User's manual.\fR\fB Section 3.\fR Copyright © LSUB 2014-2016
+.br
+.br
+

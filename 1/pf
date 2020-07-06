@@ -1,0 +1,120 @@
+PF(1): print files
+.LP
+.br
+\l'5i'
+.br
+.LP
+.SH
+USAGE
+.LP
+.LP
+\fC
+.DS L
+
+    usage: pf [-DWadfhilnpsuw] [-o arg] {file}
+        -D: debug
+        -W: writeall file data back to disk (-d implied)
+        -a: print addresses
+        -d: no not print file data
+        -f: no not print dir data
+        -h: serve the output as a page sent to ink
+        -i: print also ignored data
+        -l: long list for dirs
+        -n: print just names
+        -o: write destination path
+        -p: print just paths
+        -s: separate messages, print each message in its own line.
+        -u: don't use unix out
+        -w: write file data back to disk (-d implied)
+    
+.DE
+\fR
+.LP
+.LP
+.SH
+DESCRIPTION
+.LP
+\fI Pf\fR prints files. Usually the files come from the standard input
+as a result of a, perhaps filtered,\fC lf\fR command.
+.LP
+As intro(1) says, the input in Clive includes directory entries, raw data,
+and other data types (ignored by convention). This command is used as the
+last command in many pipe-lines to print the result of the processing or
+to write the resulting files back to disk.
+.LP
+.SH
+EXAMPLES
+.LP
+List files in the home directory:
+.LP
+\fC
+.DS L
+
+    ; lf $home,1 | pf
+    /zx/usr/nemo
+    /zx/usr/nemo/acme
+    /zx/usr/nemo/bin
+    ...
+    
+.DE
+\fR
+.LP
+.LP
+List Go files and their contents:
+.LP
+\fC
+.DS L
+
+    ; lf -g ,~go$ | pf
+    
+.DE
+\fR
+.LP
+.LP
+Rewrite all files with their first three lines:
+.LP
+\fC
+.DS L
+
+    ; lg -g , | lns -r ,3 | pf -w
+    
+.DE
+\fR
+.LP
+.LP
+The same, but write them under\fC /tmp\fR:
+.LP
+\fC
+.DS L
+
+    ; lg -g , | lns -r ,3 | pf -w -o /tmp
+    
+.DE
+\fR
+.LP
+.LP
+There are more examples in lf(1) and other manual pages.
+.LP
+.SH
+SOURCE
+.LP
+.IP \(bu
+\fC/zx/sys/src/clive/cmd/pf\fR
+.LP
+.LP
+.SH
+SEE ALSO
+.LP
+.IP \(bu
+lf(1), list files.
+.LP
+.LP
+.LP
+.br
+\l'5i'
+.br
+.LP
+\fB User's manual.\fR\fB Section 1.\fR Copyright © LSUB 2014-2016
+.br
+.br
+

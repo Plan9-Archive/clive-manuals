@@ -1,0 +1,251 @@
+INTRO(1): introduction to clive
+.LP
+.br
+\l'5i'
+.br
+.LP
+.SH
+USAGE
+.LP
+.LP
+\fC
+.DS L
+
+    ; Importzx
+    ; export GOROOT=/zx/sys/golang
+    ; export PLAN9=/plan9
+    ; export CPUTYPE=darwin_amd64
+    ; export GOPATH=/zx/usr/$USER/gosrc
+    ; export GOBIN=/zx/usr/$USER/bin/$CPUTYPE
+    ; PATH=$PATH:/zx/bin/$CPUTYPE:/zx/bin/rc:$PLAN9/bin
+    ; NS='/ /
+        /zx zx!tcp!zxserver!zx!main
+    '
+    
+.DE
+\fR
+.LP
+.LP
+.SH
+DESCRIPTION
+.LP
+Clive is a system built out of services interconnected through channels
+and other network connections. Processes in clive run on other hosted operating
+systems, because there is no native clive kernel as of now.
+.LP
+The central part of the system is a file system (or rather, a set of file
+systems) exported through the zx protocol. The file system(s) may be mounted
+on UNIX-like systems through fuse, to permit alien (UNIX) commands to operate
+on Clive services. The Clive shell and other clive commands know how to
+speak zx directly to Clive servers.
+.LP
+The main tree is usually mounted at\fC /zx\fR and its dump can be found
+at\fC /dump\fR. The\fC /once\fR tree keeps stuff not be dumped. The tree
+at\fC /x\fR is used to request command execution via xcmd(1). The dump
+contains a frozen version of the main tree for each day. Directories named\fC
+tmp\fR or\fC tmp.*\fR or\fC *.tmp\fR or containing a file named\fC NODUMP\fR
+are never copied to the dump. Files with names starting with a dot character
+(\fC.\fR) are never dumped. See nspace(3) for the conventions of the name
+space.
+.LP
+File system services are split into\fI finders\fR and\fI zx file trees.\fR
+Most Clive servers are both finders and file trees.
+.LP
+A finder accepts find requests to find directory entries. A file tree accepts
+file operations on directory entries. Directory entries are sets of name/value
+pairs, where certain attributes are expected to exist.
+.LP
+Clive commands carry a per-process name-space where foreign (UNIX) or zx
+file systems may be imported. The name space maps name prefixes to ordered
+sets of directory entries and accepts find requests to gather directory
+entries of interest. The name space is initialized by inspecting the\fC
+NS\fR environment variable, which can be adjusted at will for different
+commands, and inherited when new processes are created.
+.LP
+Command I/O relies on input and output channels, carrying data as byte
+arrays, directory entries, file addresses, and other types in general.
+Each channel has a name and it is customary to use\fI in\fR,\fI out\fR,
+and\fI err\fR to represent the channels for standard input, output, and
+error.
+.LP
+Commands executed within ix(1) also have the\fI ink\fR output channel,
+used to let them output graphical interfaces and requests for\fI ix\fR
+to look for things or to execute commands.
+.LP
+Some commands accept a configuration file. The convention is to provide
+the configuration in the environment, or in a file at\fC $home/lib\fR,
+or in a dot-file at\fC $home\fR. For example, ql(1) looks for\fC $ql\fR,
+or the file\fC $home/lib/ql\fR, or the file\fC $home/.ql\fR.
+.LP
+File names given to most commands are a combination of a file (path) name
+and a predicate. Either (or both) may be missing from a name. The file
+name along with the predicate is used to select files matching the name/predicate
+pair. See names(3) for a description and examples of names and predicates.
+.LP
+Standard I/O in Clive happens through channels of arbitrary data types
+but these conventions hold:
+.IP \(bu
+Only\fC []byte\fR messages are considered actual data to be processed.
+.IP \(bu
+\fCzx.Dir\fR directory entries indicate to which file the following data
+refers to.
+.IP \(bu
+All other (unknown) messages are to be forwarded to the output when read
+from the input.
+.LP
+.LP
+.LP
+Most commands rely on these conventions so that, for example, a command
+lists files and retrieves file data from the server and following commands
+in a shell pipe-line operate on such data without knowing how to retrieve
+files from the server. For example:
+.LP
+\fC
+.DS L
+
+    ; gf src,- | gr  func | pf
+    
+.DE
+\fR
+.LP
+gets regular files under the\fC src\fR directory and sends them to\fC gr\fR
+to select lines containing\fC func\fR, which sends the result to\fC pf\fR
+to print the result.
+.LP
+A Clive command may be given input files either through the standard input
+or, if the command accepts that, by supplying names in the command line.
+Names are a combination of a file name and a predicate. Note that more
+than one file can be sent either way. Clive is not UNIX.
+.LP
+Many commands accept a\fC -u\fR flag that makes them issue output for UNIX,
+and not for clive. That is the default in\fC pf\fR. By default, all commands
+process the standard stream of messages and so they would not work as expected
+if they are fed by a unix output stream or their output is sent to a unix
+device or command. The commands\fC rf\fR and\fC pf\fR convert a UNIX stream
+to a Clive stream and vice-versa. For example
+.LP
+\fC
+.DS L
+
+    ; seq 15 | rf | gr 1 | pf
+    
+.DE
+\fR
+.LP
+.LP
+Alien commands are relegated to using the FUSE provided services and are
+not aware of the Clive name spaces.
+.LP
+.IP \(bu
+This section documents shell commands.
+.IP \(bu
+Section 2 documents source packages (in Go).
+.IP \(bu
+Section 3 documents conventions.
+.LP
+.LP
+.LP
+.LP
+The synopsys in the commands follows the UNIX style, but uses curly brackets
+to indicate flags that may be repeated multiple times.
+.LP
+.SH
+EXAMPLES
+.LP
+To import the main tree using the ZX file protocol:
+.LP
+\fC
+.DS L
+
+    ; Importzx
+    
+.DE
+\fR
+.LP
+which does something like:
+.LP
+\fC
+.DS L
+
+    ; zxfuse -n 'tcp!crun.lsub.org!zx!dump' /dump&
+    ; zxfuse -v 'tcp!crun.lsub.org!zx!main' /zx&
+    ...
+    
+.DE
+\fR
+.LP
+.LP
+To work on your local tree, in the environment set by the commands in the
+synopsys:
+.LP
+\fC
+.DS L
+
+    ; export GOBIN=/zx/usr/$USER/bin/$CPUTYPE
+    ; export GOPATH=/zx/usr/$USER/gosrc
+    ; go install ....
+    
+.DE
+\fR
+.LP
+.LP
+To work in the system, in the same environment:
+.LP
+\fC
+.DS L
+
+    ; export GOBIN=/zx/bin/$CPUTYPE
+    ; export GOPATH=/zx/sys
+    ; go install ....
+    
+.DE
+\fR
+.LP
+or
+.LP
+\fC
+.DS L
+
+    ; Go install ...
+    
+.DE
+\fR
+.LP
+.LP
+See intro(2) for an implementation example of a hello-world clive command.
+.LP
+.SH
+SOURCE
+.LP
+.IP \(bu
+\fC/zx/sys/src/clive\fR
+.IP \(bu
+\fC/zx/bin/rc\fR
+.LP
+.LP
+.LP
+.SH
+SEE ALSO
+.LP
+.IP \(bu
+intro(2)
+.IP \(bu
+nspace(3)
+.IP \(bu
+names(3)
+.IP \(bu
+dir(3)
+.LP
+.LP
+.LP
+.LP
+.LP
+.LP
+.br
+\l'5i'
+.br
+.LP
+\fB User's manual.\fR\fB Section 1.\fR Copyright © LSUB 2014-2016
+.br
+.br
+

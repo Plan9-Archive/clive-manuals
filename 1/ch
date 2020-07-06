@@ -1,0 +1,81 @@
+CH(1): change file attributes
+.LP
+.br
+\l'5i'
+.br
+.LP
+.SH
+USAGE
+.LP
+.LP
+\fC
+.DS L
+
+    usage: ch [-D] {attr value}
+        -D: debug
+    
+.DE
+\fR
+.LP
+.LP
+.SH
+DESCRIPTION
+.LP
+\fI ch\fR changes zx attributes for files.
+.LP
+The fake attribute\fC uids\fR can be used to change both\fC uid\fR and\fC
+gid\fR. The attribute\fC mode\fR admits as a value the forms\fC +rwx\fR
+and\fC -rwx\fR to add or remove those bits.
+.LP
+The value for the\fC size\fR attribute admits a trailing\fC k\fR,\fC m\fR,
+or\fC g\fR to indicate a size expressed as an integral number of Kibibytes,
+Mibibytes, or Gibibytes.
+.LP
+.SH
+EXAMPLES
+.LP
+Add read permission to all files within the current directory:
+.LP
+\fC
+.DS L
+
+    ; lf , | ch mode +r
+    
+.DE
+\fR
+.LP
+.LP
+Create a file with 1M of zeros:
+.LP
+\fC
+.DS L
+
+    ; eco -n >file
+    ; lf file | ch size 1m
+    
+.DE
+\fR
+.LP
+.LP
+.SH
+SOURCE
+.LP
+.IP \(bu
+\fC/zx/sys/src/clive/cmd/ch\fR
+.LP
+.LP
+.SH
+SEE ALSO
+.LP
+.IP \(bu
+dir(3) for a description of attributes.
+.LP
+.LP
+.br
+\l'5i'
+.br
+.LP
+\fB User's manual.\fR\fB Section 1.\fR Copyright © LSUB 2014-2016
+.br
+.br
+

@@ -1,0 +1,74 @@
+ZXSYNC(1): synchronize a replica
+.LP
+.br
+\l'5i'
+.br
+.LP
+.SH
+USAGE
+.LP
+.LP
+\fC
+.DS L
+
+    usage: zxsync [-Dnuv] [file]
+        -D: debug
+        -n: dry run
+        -u: don't use unix out
+        -v: verbose
+    
+.DE
+\fR
+.LP
+.LP
+.SH
+DESCRIPTION
+.LP
+\fI Zxsync\fR both pulls and pushes changes for a remote tree and a local
+replica. It compares local and remote changes and decides which changes
+must be pushed and which ones must be pulled. The newest change wins if
+there is a conflicting change. File removes are noted and using the modification
+time for their directory. If a directory is added or removed, inner files
+and directories are added or removed as well no matter if the other replica
+has changes for such inner files. See zxrepl(1) for usage examples.
+.LP
+If no argument is given,\fI zxsync\fR synchronizes all replicas found at\fC
+/u/lib/repl\fR.
+.LP
+When given, the\fI file\fR argument names the replica and the database
+files. The replica is the basename for\fI file\fR. The local database file
+is\fI file\fR with '\fC.ldb\fR' appended. The remote database file is\fI
+file\fR with '\fC.rdb\fR' appended. If\fI file\fR does not contain '\fC/\fR'
+then '\fC/u/lib/repl/\fR' is prepended to it.
+.LP
+Metadata changes at the root of the replica are always ignored.
+.LP
+.SH
+SOURCE
+.LP
+.IP \(bu
+\fC/zx/sys/src/clive/cmd/zxsync\fR
+.LP
+.LP
+.SH
+SEE ALSO
+.LP
+.IP \(bu
+zxrepl(1) to create replicas.
+.IP \(bu
+zxpull(1) to pull changes.
+.IP \(bu
+zxpush(1) to push changes.
+.LP
+.LP
+.LP
+.LP
+.LP
+.br
+\l'5i'
+.br
+.LP
+\fB User's manual.\fR\fB Section 1.\fR Copyright © LSUB 2014-2016
+.br
+.br
+

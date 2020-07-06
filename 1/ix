@@ -1,0 +1,332 @@
+IX(1): ink shell and command executor
+.LP
+.br
+\l'5i'
+.br
+.LP
+.SH
+USAGE
+.LP
+.LP
+\fC
+.DS L
+
+    usage: ix [-DIn] [-l file] {file}
+        -D: debug
+        -I: debug ink
+        -l file: load the session from the given file
+        -n: dry run (don't ever save)
+    
+.DE
+\fR
+.LP
+.LP
+.SH
+DESCRIPTION
+.LP
+\fI Ix\fR is a shell using the [net/ink(2)], web based, graphics interface.
+It lets the user browse the file system, execute commands, edit files,
+and open other ink interfaces (including web pages and interfaces from
+other tools in the system).
+.LP
+The interface is reached on the ink port using a Web browser. Initially,
+a command window is created. Other command windows and further edits may
+be open using it. The words near the top are buttons:
+.IP \(bu
+\fCmore\fR: increases the number of columns in the page.
+.IP \(bu
+\fCless\fR: decreases the number of columns in the page.
+.IP \(bu
+\fCwin\fR: opens a new command window.
+.IP \(bu
+\fCquit\fR: quits IX.
+.LP
+.LP
+.LP
+.LP
+.LP
+IX ancestors (O/live, Omero, and Acme) inspired much of the mouse language.
+If you know how to use one of those, you almost know how to use IX. Mouse
+buttons are named 1, 2, 3, and 4 (left to right). Function keys (starting
+at F1) may be used as mouse buttons. Function key F12 toggles debug in
+the browser console.
+.LP
+Each window is decorated with a status line. A click on the icons shown
+in the line may be used to close the window, save it (only shown if the
+window has unsaved changed), minimize all windows in the same column, make
+the window larger, make it smaller, and resize it to make its bottom the
+bottom of the column. A click on the rest of the status line shifts the
+windows in the column, moving the top window to the end of the column.
+Windows may be dragged and moved to another location using button-1 on
+the status line.
+.LP
+The status line shows a label written in black when the window is clean.
+The label is written in blue when the window is dirty (and should be saved).
+The status line background is shown in a lighter color when the window
+has the focus, and it is darkern when the window is not the focus.
+.LP
+A click with button-1 on a window sets it as the focus. However, the keyboard
+follows the mouse and writes at the window under the mouse pointer. You
+can type commands in a window and use another one as the focus for them.
+.LP
+The width of a window depends on the number of columns and cannot be adjusted
+by the user. The height of a window can be adjusted by dragging its bottom
+line with the mouse.
+.LP
+Button-1 sets the selection. It is empty for a single click, a word for
+a double click, and a long word for a tripple click. A long word accepts
+more runes as word characters. A double click on a rune that seems to delimit
+a range (like brackets, quotes, etc.) selects the enclosed text. A double
+click at the end of the line selects the entire line. To select more text
+than shown in a window, use the scroll wheel while holding down button-1.
+.LP
+While holding down button-1, a click with button-2 cuts the selected text,
+and a click with button-3 replaces the selected text with a paste of the
+clipboard. A chick with button-4 while holding down button-1 copies the
+selection into the clipboard. Keys\fI Command\fR-!x!,\fI Command\fR-!v!,
+and\fI Command\fR-!c!, achieve the same effect.
+.LP
+Commands are executed with the button-2, either with a single click or
+with a selection. New edits can be looked for with the button-3, either
+with a single click or with a selection. Text search happens when using
+button-4, which searches for the last text selected (perhaps at a different
+window) on the clicked window. Executing a directory in a commands window
+changes the dot to that directory. Executing it in a directory window replaces
+the directory shown with the one executed.
+.LP
+For buttons 2 and 3, a click at the end of a line refers to the whole line,
+a click on a word refers on the whole word, and a click on a selection
+refers to the text selected. A click on a final empty line selects the
+previous line.
+.LP
+The mouse wheel scrolls up and down the text shown in the window. When
+used outside a window it scrolls the whole page (or screen). Up and down
+array keys also scroll text in windows.
+.LP
+A thin blue line on the right of text windows depicts the location of the
+text shown within the full text. The size of the line is proportional to
+the percentage of text shown and its position indicates the location of
+the shown text. This line cannot be used to scroll.
+.LP
+The left and right arrow keys do not move the cursor, but perform undo
+and redo operations.
+.LP
+There is no command language (although there are some builtins). Commands
+executed are standard ql(1) commands, unless they are a builtin. IX serves
+a standard output\fI ink\fR channel to all commands executed in it. Commands
+with user interfaces rely on this to use the relevant IX instance. But
+note how
+.LP
+\fC
+.DS L
+
+    eco  http://lsub.org >[out:ink]
+    
+.DE
+\fR
+.LP
+and similar commands can be used to output URLs, or HTML in general, to
+the standard output\fI ink\fR and convince IX to display external interfaces
+or resources. When a command outputs a file address (or more), IX selects
+that address as a result, and button-3 clicks on such selection iterates
+through the address list.
+.LP
+Ink messages starting with\fC exec:\fR are understood as requests to execute
+commands and display its output in a new window. Those starting with\fC
+look:\fR are understood as requests to look for text.
+.LP
+The variable\fC $look\fR, or the file\fC $home/lib/look\fR, or\fC $home/.look\fR
+are used to learn rules to execute commands when the user looks for text.
+.LP
+Command windows operate like a typescript. Upon command execution, the
+command output will get inserted on the line after the end of the command.
+Each window operates in its own Clive command context and may use a different
+name space, dot, etc.
+.LP
+The builtin commands are:
+.IP \(bu
+\fCcd\fR: changes the directory to that of the focus (if no argument is
+given) or to that given.
+.IP \(bu
+\fCpwd\fR: print the current directory.
+.IP \(bu
+\fCcmds\fR: list the running commands.
+.IP \(bu
+\fC=\fR: print the dot (the selection of the focus).
+.IP \(bu
+\fCn file\fR: create a new edit for the named file.
+.IP \(bu
+\fCw [file]\fR: write the focus, if dirty, back to disk. If the file name
+is given, it is written to that file and the edit is updated to operate
+on the new name.
+.IP \(bu
+\fCe\fR: re-read the focus, discarding all edits, and start a new edit.
+.IP \(bu
+\fCd\fR: delete the focus.
+.IP \(bu
+\fCu\fR: undo the last edit.
+.IP \(bu
+\fCr\fR: redo the last undo.
+.IP \(bu
+\fC> cmds...\fR: run commands using the dot as input.
+.IP \(bu
+\fC< cmds...\fR: run commands inserting their output at the dot.
+.IP \(bu
+\fC |cmds...\fR: filter the dot with commands.
+.IP \(bu
+\fCx [expr] cmd\fR: run command for all selections of edits matching expr.
+.IP \(bu
+\fCX [expr] cmd\fR: run command for all edits matching expr.
+.IP \(bu
+\fC. cmd...\fR: run command on the dot.
+.IP \(bu
+\fC, cmd...\fR: run command on the focus.
+.IP \(bu
+\fCdump [name]\fR: print the state of the session or dump it into the given
+file name, if any.
+.IP \(bu
+\fCload name\fR: load the session edits dumped at the given file name.
+.IP \(bu
+\fCwin\fR: start a new commands window.
+.IP \(bu
+\fCrules\fR: reload the look rules.
+.LP
+.LP
+.LP
+.LP
+.LP
+.LP
+.LP
+.LP
+.LP
+.LP
+.LP
+.LP
+.LP
+.LP
+.LP
+.LP
+.LP
+.LP
+.LP
+.LP
+.LP
+.LP
+All other commands are external Clive commands.
+.LP
+Typing\fI Esc\fR twice at a window clears the window. For command windows,
+the text is cleared. For directory windows, the directory is re-read. For
+text edits, the edits are discarded and the on-disk text is re-read.
+.LP
+Text processing happens for keys supplied by the browser (which might or
+might not take into account your keyboard layout and locale settings).
+Nevertheless, the\fI Alt\fR key may be used to compose a key by typing\fI
+Alt\fR and then one or more keys. The valid sequences are those of Plan
+9 from Bell Labs. See keyboard(3) for a description of valid key sequences.
+.LP
+.SH
+EXAMPLES
+.LP
+Open all go files under the current dir:
+.LP
+Type\fC
+.DS L
+
+    .,~*.go
+    
+.DE
+\fR
+.LP
+and right-click on it.
+.LP
+Find foo in the current edit: Type
+.LP
+\fC
+.DS L
+
+    , >gr -x foo
+    
+.DE
+\fR
+.LP
+and middle-click on it. If you click (button-3) on one of the addresses
+printed by\fC gr\fR, the selection is changed. If you click on one of those
+selections (button-3), the next address located by\fC gr\fR is looked for.
+If you click on one of those selections (button-4), the next instance of
+selected text is looked for.
+.LP
+Replace foo with bar in all edits: Type
+.LP
+\fC
+.DS L
+
+    X |trex foo bar
+    
+.DE
+\fR
+.LP
+and middle click on it.
+.LP
+Save everything: Type
+.LP
+\fC
+.DS L
+
+    X w
+    
+.DE
+\fR
+.LP
+and middle click on it.
+.LP
+Teach IX to show manual pages and to use the OS browser to open URLs, and
+teach it to open PostScript and PDF files by itself.
+.LP
+\fC
+.DS L
+
+    look='# rules for look(2), used by ix(1)
+    ^([a-zA-Z.]+)\&\\(([0-9]+)\&\\)$
+        doc \&\\2 \&\\1|rf
+        ^https://localhost
+            not
+    ^(http|https)://.*$
+        open \&\\0
+    ^.*\&\\.(ps|pdf)$
+        eco file://^<{path \&\\0} '|' \&\\0 >[out:ink]
+    '
+    ix &
+    
+.DE
+\fR
+.LP
+.SH
+SEE ALSO
+.LP
+.IP \(bu
+gr(1) has many useful examples for command lines that may be used as IX
+commands to perform common editing tasks.
+.IP \(bu
+cmd.look(2) for a description of look rules.
+.IP \(bu
+keyboard(3) for composing keys.
+.LP
+.LP
+.LP
+.LP
+.SH
+SOURCE
+.LP
+.IP \(bu
+\fC/zx/sys/src/clive/cmd/ix\fR
+.LP
+.LP
+.LP
+.br
+\l'5i'
+.br
+.LP
+\fB User's manual.\fR\fB Section 1.\fR Copyright © LSUB 2014-2016
+.br
+.br
+

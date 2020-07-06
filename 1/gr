@@ -1,0 +1,147 @@
+GR(1): grep files
+.LP
+.br
+\l'5i'
+.br
+.LP
+.SH
+USAGE
+.LP
+.LP
+\fC
+.DS L
+
+    usage: gr [-Daeflmsuvx] rexp [rexp]
+        -D: debug
+        -a: print just addresses
+        -e: extend regexps to match all the text
+        -f: print addresses for matches in full files (like sam)
+        -l: print just the names of matching files
+        -m: print just matching text
+        -s: just status
+        -u: use unix out
+        -v: invert match
+        -x: print selections for further editing commands
+
+        gg is gr -xef
+        gv is gr -xvef
+        gx is gr -xf
+    
+.DE
+\fR
+.LP
+.LP
+.SH
+DESCRIPTION
+.LP
+\fI Gr\fR greps zx files for the expression given. If two expressions are
+given, they match the text starting at the match for the first expression
+and ending at the text matching the second one. This is similar to an address
+in Sam and Acme editors.
+.LP
+By default it operates on a line by line basis, but most interesting usages
+rely on flag\fC -f\fR that operates on full files.
+.LP
+Flag\fC -x\fR deserves a note. It makes the command pass to the output
+unmatched text as ignored output, which means that such data is ignored
+by default by most other commands, but can be retrieved later, in-place,
+by tools like pf(1). Also, it makes\fI gr\fR report as\fC zx.Addr\fR data
+types the addresses for matches into the output, and\fI pf\fR knows how
+to print those.
+.LP
+.SH
+EXAMPLES
+.LP
+Grep for\fC func\fR at the start of line in all files in the subtree rooted
+at the current directory:
+.LP
+\fC
+.DS L
+
+    ; lf -g ,- | gr -u '^func'
+    
+.DE
+\fR
+.LP
+.LP
+Grep to select lines with\fC func\fR at the start of line, translate those
+lines to uppercase, and print resulting files (both selected and unselected
+lines):
+.LP
+\fC
+.DS L
+
+    lf -g ,- | gr -xf '^func.*\&\\n' | trex -c | pf -i
+    
+.DE
+\fR
+.LP
+.LP
+Grep for\fC struct\fR or\fC var\fR declarations in go sources and print
+them in uppercase:
+.LP
+\fC
+.DS L
+
+    lf -g ,~*.go | gr -xf '^(struct|var)'  '^(}|\&\\))\&\\n' | trex -c | pf
+    
+.DE
+\fR
+.LP
+Grep for\fC struct\fR or\fC var\fR declarations in go sources, filter only
+those that contain\fC ix\fR, and print them in uppercase,
+.LP
+\fC
+.DS L
+
+    lf -g ,~*.go | gr -xf '^(struct|var)'  '^(}|\&\\))\&\\n' |
+        gr -xfe ix | trex -c | pf
+    
+.DE
+\fR
+.LP
+Grep for\fC struct\fR or\fC var\fR declarations in go sources, filter only
+those that do not contain\fC ix\fR, and print them in uppercase,
+.LP
+\fC
+.DS L
+
+    lf -g ,~*.go | gr -xf '^(struct|var)'  '^(}|\&\\))\&\\n' |
+        gr -xfev ix | trex -c | pf
+    
+.DE
+\fR
+.LP
+Grep for\fC struct\fR or\fC var\fR declarations in go sources, filter only
+those that do not contain\fC ix\fR, and print all words in different lines
+.LP
+\fC
+.DS L
+
+    lf -g ,~*.go | gr -xf '^(struct|var)'  '^(}|\&\\))\&\\n' |
+        gr -xfve ix | gr -xf '[a-zA-Z]+'  | pf -s
+    
+.DE
+\fR
+.LP
+.LP
+Popular aliases are\fC gg\fR for\fC gr -xef\fR, similar to the\fC g\fR
+command in Sam.\fC gv\fR for\fC gr -xvef\fR, similar to the\fC v\fR command
+in Sam.\fC gx\fR for\fC gr -xf\fR, similar to the\fC x\fR command in Sam.
+.SH
+SOURCE
+.LP
+.IP \(bu
+\fC/zx/sys/src/clive/cmd/gr\fR
+.LP
+\fC
+.LP
+.LP
+.br
+\l'5i'
+.br
+.LP
+\fB User's manual.\fC\fB Section 1.\fC\fR Copyright © LSUB 2014-2016
+.br
+.br
+

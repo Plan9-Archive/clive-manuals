@@ -1,0 +1,159 @@
+ZXREPL(1): create a file tree replica configuration
+.LP
+.br
+\l'5i'
+.br
+.LP
+.SH
+USAGE
+.LP
+.LP
+\fC
+.DS L
+
+    usage: zxrepl [-Dmnuv] {-x arg} [file [ldir rdir]]
+        -D: debug
+        -m: move existing replica client/server paths and/or add excludes
+        -n: print just replica names when used to list replicas
+        -u: don't use unix out
+        -v: verbose
+        -x: exclude
+    
+.DE
+\fR
+.LP
+.LP
+.SH
+DESCRIPTION
+.LP
+Without arguments,\fI zxrepl\fR lists replicas found at\fC /u/lib/repl\fR.
+.LP
+With one argument (naming a replica),\fI zxrepl\fR lists the replica paths.
+Databases are printed if verbose is set.
+.LP
+With three arguments\fI Zxrepl\fR creates the databases for a replica.
+The replica consists on a local file tree and a remote one. The remote
+is usually a single tree at the server and local replicas synchronize with
+the remote.\fI Zxrepl\fR does not perform any synchronization. See the
+example.
+.LP
+The\fI file\fR argument names the replica and the database files. The replica
+is the basename for\fI file\fR. The local database file is\fI file\fR with
+'\fC.ldb\fR' appended. The remote database file is\fI file\fR with '\fC.rdb\fR'
+appended. If\fI file\fR does not contain '\fC/\fR' then '\fC/u/lib/repl/\fR'
+is prepended to it.
+.LP
+Arguments to\fC -x\fR are expressions to exclude files. If the expression
+starts with '\fC/\fR' it is matched against paths relative to the root
+of the replicated tree. Otherwise, the expression is matched against all
+components in the path and the file is excluded if there is a match.
+.LP
+Under flag\fC -m\fR, paths for local and remote trees are updated without
+making any other change in the databases, and any given exclude is added
+to existing excludes. This can be used after a replicated tree has moved
+to a different location and also to add new excludes.
+.LP
+Metadata changes at the root of the replica are always ignored.
+.LP
+.SH
+EXAMPLE
+.LP
+Make a replica for the clive source excluding ZX attribute files and Git
+directories.
+.LP
+\fC
+.DS L
+
+    ;  zxrepl -v -x .git -x .zx clive \&\\
+        /u/gosrc/src/clive \&\\
+        'tcp!fs.lsub.org!zx!lsub!/sys/src/clive'
+    
+.DE
+\fR
+.LP
+.LP
+Now make the local tree identical to the remote one (overwriting any local
+file):
+.LP
+\fC
+.DS L
+
+    ; zxpull -va clive
+    
+.DE
+\fR
+.LP
+After making changes, see which changes will be synchronized:
+.LP
+\fC
+.DS L
+
+    ; zxsync -nv clive
+    
+.DE
+\fR
+.LP
+And synchronize them:
+.LP
+\fC
+.DS L
+
+    ; zxsync -v clive
+    
+.DE
+\fR
+.LP
+.LP
+List existing replicas:
+.LP
+\fC
+.DS L
+
+    ; zxrepl
+    
+.DE
+\fR
+.LP
+.LP
+Update the replica databases to reflect new (local or remote) paths for
+for the replicated tree and to add a new exclude:
+.LP
+\fC
+.DS L
+
+    ;  zxrepl -m -x objdir clive \&\\
+        /u/gosrc/src/clive \&\\
+        'tcp!fs.lsub.org!zx!lsub!/newdir/clive'
+    
+.DE
+\fR
+.LP
+.LP
+.SH
+SOURCE
+.LP
+.IP \(bu
+\fC/zx/sys/src/clive/cmd/zxrepl\fR
+.LP
+.SH
+SEE ALSO
+.LP
+.IP \(bu
+zxpull(1) to pull changes.
+.IP \(bu
+zxpush(1) to push changes.
+.IP \(bu
+zxsync(1) to synchronize changes.
+.LP
+.LP
+.LP
+.LP
+.LP
+.br
+\l'5i'
+.br
+.LP
+\fB User's manual.\fR\fB Section 1.\fR Copyright © LSUB 2014-2016
+.br
+.br
+

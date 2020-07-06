@@ -1,0 +1,105 @@
+CNT(1): count lines, words, runes, and bytes
+.LP
+.br
+\l'5i'
+.br
+.LP
+.SH
+USAGE
+.LP
+.LP
+\fC
+.DS L
+
+    usage: cnt [-Dabclmnruw] {file}
+        -D: debug
+        -a: count all messages and not just data msgs
+        -b: count just bytes
+        -c: count just characters
+        -l: count just lines
+        -m: count just msgs
+        -n: print just totals
+        -r: count just runes
+        -u: use unix output
+        -w: count just words
+    
+.DE
+\fR
+.LP
+.LP
+.SH
+DESCRIPTION
+.LP
+\fI Cnt\fR counts messages, lines, words, runes, and bytes in the given
+files. A word is defined as a series of non-control, non-separation-punctuation,
+and non-space runes at the start of a file or after a non-word rune. A
+rune is considered as separation-punctuation if it is punctuation and non-dash
+and non-connector. This definition is not compatible with the venerable\fC
+wc\fR UNIX command, but it is more accurate.
+.LP
+If no file is given, the program prints just the count(s). Otherwise, it
+prints the count(s) followed by the name of each file. All counters are
+printed by default, unless a flag says otherwise.
+.LP
+.SH
+EXAMPLE
+.LP
+.LP
+\fC
+.DS L
+
+    % lf -g , | cnt -u
+           1       72      191     1220     1220  all/all.go
+           1       33       66      420      420  all/all_test.go
+           1       60      209     1311     1311  auth/auth.go
+           1      163      501     2966     2966  ch/ch.go
+           1      630     1806    11475    11475  cmd.go
+    
+.DE
+\fR
+.LP
+.LP
+The same may be achieved running
+.LP
+\fC
+.DS L
+
+    % cnt -u ,
+    
+.DE
+\fR
+.LP
+.LP
+Grep for\fC struct\fR or\fC var\fR declarations in go sources, filter only
+those that do not contain\fC ix\fR, and count the words in them:
+.LP
+\fC
+.DS L
+
+    % lf -g ,~*.go | gr -xf '^(struct|var)'  '^(}|\&\\))\&\\n' |
+        gr -xfve ix | gr -xf '[a-zA-Z]+'  |
+        cnt -mu
+          15        0        1       49       49  ix.go
+    
+.DE
+\fR
+.LP
+The pipe selects each word and sends a message for each one, and then counting
+the messages produces the expected result.
+.LP
+.SH
+SOURCE
+.LP
+.IP \(bu
+\fC/zx/sys/src/clive/cmd/cnt\fR
+.LP
+.LP
+.LP
+.br
+\l'5i'
+.br
+.LP
+\fB User's manual.\fR\fB Section 1.\fR Copyright © LSUB 2014-2016
+.br
+.br
+

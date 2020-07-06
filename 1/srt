@@ -1,0 +1,139 @@
+SRT(1): sort lines
+.LP
+.br
+\l'5i'
+.br
+.LP
+.SH
+USAGE
+.LP
+.LP
+\fC
+.DS L
+
+    usage: srt [-1Ddux] [-F sep] {-r key} {file}
+        -1: fields separated by 1 run of the field delimiter string
+        -D: debug
+        -F sep: input field delimiter character(s) (or string under -1)
+        -d: do not print dup lines
+        -r key: use this field range as the sort key(s)
+        -u: use unix out
+        -x: sort each extracted text on its own (eg. out from gr -x)
+    
+.DE
+\fR
+.LP
+.LP
+.SH
+DESCRIPTION
+.LP
+\fI Srt\fR sorts files using as keys the ones indicated to the\fC -r\fR
+flag, in the order in which they were specified. This can be used to sort
+each input file on its own and to sort output from\fC gx\fR or related
+commands.
+.LP
+A key is indicated by giving, in this order:
+.IP \(bu
+A field range
+.IP \(bu
+A format
+.IP \(bu
+An optional reverse indicator
+.LP
+.LP
+.LP
+.LP
+A range may be a single line number, counting from 1, or a pair of start
+and end field numbers separated by a '\fC,\fR' character. Negative field
+numbers count backwards from the end of the line (the last is\fC -1\fR
+and so on). A missing start number in a range means\fC 1\fR, and a missing
+end number in a range means\fC -1\fR. If no range is given, '\fC,\fR' is
+implied. And, when such range is indicated, all fields are printed, one
+line at a time.
+.LP
+The format may be one of:
+.IP \(bu
+\fCn\fR to consider that the field is a number.
+.IP \(bu
+\fCt\fR to consider that the field is a time.
+.IP \(bu
+\fCs\fR to consider that the field is a string, this is the default when
+no format is given.
+.LP
+.LP
+.LP
+.LP
+The reverse indicator is '\fCr\fR', causing a sort in reverse order.
+.LP
+By default the field separator is a run of blanks. Flag\fC -F\fR changes
+the set of runes used as field separators to its argument.
+.LP
+Flag\fC -1\fR indicates that fields are separated exactly by one instance
+of the separator string. Such string defaults to a tabulator character
+in this case, unless\fC -F\fR says otherwise.
+.LP
+.SH
+EXAMPLES
+.LP
+Sort in ascending string order:
+.LP
+\fC
+.DS L
+
+    srt file
+    
+.DE
+\fR
+.LP
+.LP
+Sort in reverse numeric order (all fields):
+.LP
+\fC
+.DS L
+
+    srt -r nr file
+    
+.DE
+\fR
+.LP
+.LP
+Sort all files in the current directory and write them back sorted:
+.LP
+\fC
+.DS L
+
+    ; lf -g ,1 | srt -x | wf
+    
+.DE
+\fR
+.LP
+.LP
+Sort the second and third fields in ascending numeric order and the last
+field in reverse string order, for a file separated with a '\fC:\fR' character,
+honoring empty fields:
+.LP
+\fC
+.DS L
+
+    ; srt -1F: -r 2,3n -r -1r file
+    
+.DE
+\fR
+.LP
+.LP
+.SH
+SOURCE
+.LP
+.IP \(bu
+\fC/zx/sys/src/clive/cmd/srt\fR
+.LP
+.LP
+.LP
+.br
+\l'5i'
+.br
+.LP
+\fB User's manual.\fR\fB Section 1.\fR Copyright © LSUB 2014-2016
+.br
+.br
+

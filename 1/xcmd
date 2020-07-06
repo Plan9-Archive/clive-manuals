@@ -1,0 +1,16 @@
+XCMD(1): execute commands
+.LP
+.br
+\l'5i'
+.br
+.LP
+.SH
+USAGE
+.LP
+.LP
+\fC
+.DS L
+
+    0
+.DE
+\fRusage: xcmd [-Dv] [-c cmd] [-d dir] [-s shell] 

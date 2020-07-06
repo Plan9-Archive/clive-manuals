@@ -1,0 +1,75 @@
+RUNFOR(1): run commands for input lines matching expressions
+.LP
+.br
+\l'5i'
+.br
+.LP
+.SH
+USAGE
+.LP
+.LP
+\fC
+.DS L
+
+    usage: runfor [-Dnuv] {expr cmd}
+        -D: debug
+        -n: dry run (don't run any command)
+        -u: don't use unix out
+        -v: verbose
+    
+.DE
+\fR
+.LP
+.LP
+.SH
+DESCRIPTION
+.LP
+\fI Runfor\fR takes pairs of expressions and commands as arguments and
+reads input lines. For each input line it runs the command with the first
+matching expression. Expressions are written like in sre(2). The command
+strings given may contain back-references of the form\fC \&\\0\fR,\fC \&\\1\fR,
+\&... that are replaced with the matched string or substring.
+.LP
+If further input lines matching the expression for a given command are
+received while the command is running, they are discarded.
+.LP
+.SH
+EXAMPLE
+.LP
+.LP
+Receive OSX events and (1) print those that contain '\fCapple\fR' and (2)
+for paths of the form '\fC/u/*/...\fR' print the second component of the
+path.\fC
+.DS L
+
+    % osev | runfor apple 'echo \&\\0' '^/u/[^/]+/' 'echo \&\\1'
+    
+.DE
+\fR
+.LP
+Run\fC Lgo fmt\fR on directories under\fC /u/gosrc/\fR as they have their
+files changed:\fC
+.DS L
+
+    % osenv | runfor '^/u/gosrc/.*' 'Lgo fmt \&\\0'
+    
+.DE
+\fR
+.LP
+.LP
+.SH
+SOURCE
+.LP
+.IP \(bu
+\fC/zx/sys/src/clive/cmd/runfor\fR
+.LP
+.LP
+.LP
+.br
+\l'5i'
+.br
+.LP
+\fB User's manual.\fR\fB Section 1.\fR Copyright © LSUB 2014-2016
+.br
+.br
+

@@ -1,0 +1,90 @@
+PERMS(3): file permissions and permission checks
+.LP
+.br
+\l'5i'
+.br
+.LP
+.SH
+DESCRIPTION
+.LP
+Files are described by directory entries as described in dir(3). Read that
+before reading the description of permission checks that follows.
+.LP
+Users and groups are defined by the authentication protocol spoken when
+dialing file systems. They are a local to each file tree.
+.LP
+In general, only bits\fC 0777\fR are honored and their sematics are those
+used by UNIX for both files and directories, but for what follows.
+.LP
+.IP \(bu
+Users in the group are granted permission either by the group bits or by
+the other bits.
+.LP
+.IP \(bu
+The owner is granted permissions by its bits, or the group bits, or the
+other bits.
+.LP
+.IP \(bu
+When new files or directories are created, their group is set to that to
+the containing directory unless a different one is specified in the system
+call.
+.LP
+.IP \(bu
+The group mode bits for new files and directories are masked with those
+of the containing directory, and then any group bit set in the containing
+directory is set if it is also set for the user. (NOTE: not yet for the
+second edition).
+.LP
+.IP \(bu
+Moving a file requires just write permissions in the parent directories
+for the old and new locations.
+.LP
+.IP \(bu
+Creating a file requires write permission in the file (if it existed) or
+in the parent dir (if it did not exist).
+.LP
+.IP \(bu
+Only the owner may change the mode of a file.
+.LP
+.IP \(bu
+Changing the size using\fC wstat\fR requires write permissions on the file.
+.LP
+.IP \(bu
+Uids (but for\fC wuid\fR) can be changed by the owner but only if the owner
+is\fC elf\fR or the owner is also in the target uid.
+.LP
+.IP \(bu
+Only the owner or anyone with write permission on a file may change\fC
+mtime\fR or other attributes not described before.
+.LP
+.LP
+.LP
+.LP
+.LP
+.LP
+.LP
+.LP
+.LP
+.LP
+.LP
+When writing new file systems, the convention is to use zxc(1) as a the
+reference and [zx/perms(2)] to check for permissions.
+.LP
+.SH
+SEE ALSO
+.LP
+.IP \(bu
+names(3)
+.IP \(bu
+zx(2)
+.LP
+.LP
+.LP
+.br
+\l'5i'
+.br
+.LP
+\fB User's manual.\fR\fB Section 3.\fR Copyright © LSUB 2014-2016
+.br
+.br
+

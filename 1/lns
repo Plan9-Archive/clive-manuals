@@ -1,0 +1,91 @@
+LNS(1): print lines
+.LP
+.br
+\l'5i'
+.br
+.LP
+.SH
+USAGE
+.LP
+.LP
+\fC
+.DS L
+
+    usage: lns [-Dnpu] {-r range} {file}
+        -D: debug
+        -n: print line numbers
+        -p: print file names and line numbers
+        -r range: print this range
+        -u: use unix out
+    
+.DE
+\fR
+.LP
+.LP
+.SH
+DESCRIPTION
+.LP
+\fI Lns\fR prints selected lines for files in the input. Lines are specified
+as ranges. A range may be a single line number, counting from 1, or a pair
+of start and end line numbers separated by a '\fC,\fR' character. Negative
+line numbers count backwards from the end of the file (the last is\fC -1\fR
+and so on).
+.LP
+Multiple ranges may be given. But beware, in such case, to avoid storing
+the entire file, ranges involving only positive line numbers are printed
+first and then ranges involving negative line numbers. Depending on the
+ranges given, this might lead to unsorted line prints.
+.LP
+A missing start number in a range means\fC 1\fR, and a missing end number
+in a range means\fC -1\fR. If no range is given, '\fC,\fR' is implied.
+And, when such range is indicated, all lines are printed, one line at a
+time. This is useful to generate messages into the output for each single
+line in the input.
+.LP
+.SH
+EXAMPLE
+.LP
+Print the first two lines and the last two lines of the input
+.LP
+\fC
+.DS L
+
+    ; seq 15 | rf | lns -u -r ,2 -r -2,
+    1
+    2
+    14
+    15
+    
+.DE
+\fR
+.LP
+.LP
+Apply\fI cmd\fR to each line of Go sources files
+.LP
+\fC
+.DS L
+
+    ; lf -g ,~*.go | lns | for x {
+        cmd $x
+    }
+    
+.DE
+\fR
+.LP
+.LP
+.SH
+SOURCE
+.LP
+.IP \(bu
+\fC/zx/sys/src/clive/cmd/lns\fR
+.LP
+.LP
+.LP
+.br
+\l'5i'
+.br
+.LP
+\fB User's manual.\fR\fB Section 1.\fR Copyright © LSUB 2014-2016
+.br
+.br
+

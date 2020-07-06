@@ -1,0 +1,91 @@
+ZXDUMP(1): create a zx dump for file trees
+.LP
+.br
+\l'5i'
+.br
+.LP
+.SH
+USAGE
+.LP
+.LP
+\fC
+.DS L
+
+    usage: zxdump [-1Dsv] [-d dir] {-x expr} {file|name!file}
+        -1: dump once and exit
+        -D: debug
+        -d dir: where to keep the dump, ~/dump if none
+        -s: don't dump right now, wait until next at 5am
+        -v: verbose
+        -x expr: files excluded (.*, tmp.* if none given); tmp always excluded.
+    
+.DE
+\fR
+.LP
+.LP
+.SH
+DESCRIPTION
+.LP
+\fI Zxdump\fR creates a tree with a dump for contents of the named file
+tree. The dump contains one directory per tree, which contains one per
+year, which contains one per day, which contains the tree as of that day.
+.LP
+The dump is created at\fC /dump\fR unless flag\fC -d\fR tells otherwise.
+.LP
+The program operates on a local file tree and can therefore be used to
+create a dump for UNIX files. But it may dump remote trees as well.
+.LP
+The dump de-duplicates files, using the SHA of file (or directory) contents
+to identify the file.
+.LP
+Unless flag\fC -1\fR is used, the program makes a dump and then keeps on
+running to make a new dump every day at 5am.
+.LP
+By default, files starting with a '\fC.\fR' or with '\fCtmp.\fR' are not
+dumped and contents of directoried named\fC tmp\fR are ignored.
+.LP
+This command relies on underlying UNIX files to create the dump and (for
+now) to read the dumped tree, to let our dump survive any bugs found in
+the ZX code as a result of using the development tree.
+.LP
+.SH
+EXAMPLE
+.LP
+Make a dump at\fC /dump\fR for the tree at\fC /home/lsub\fR with the name\fC
+lsub\fR and then exit.
+.LP
+\fC
+.DS L
+
+    ; zxdump -1 -d /dump -v 'lsub!/home/lsub'
+    
+.DE
+\fR
+.LP
+.LP
+Start dump to make a local dump once a day for local replicas:
+.LP
+\fC
+.DS L
+
+    ; rc -c 'zxdump -vd /u/dump `{zxrepl | awk ''{print $2}''} '
+    
+.DE
+\fR
+.LP
+.LP
+.SH
+SOURCE
+.LP
+.IP \(bu
+\fC/zx/sys/src/clive/cmd/zxdump\fR
+.LP
+.LP
+.br
+\l'5i'
+.br
+.LP
+\fB User's manual.\fR\fB Section 1.\fR Copyright © LSUB 2014-2016
+.br
+.br
+

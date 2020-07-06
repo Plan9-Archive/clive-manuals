@@ -1,0 +1,149 @@
+INTRO(2): introduction to clive packages
+.LP
+.br
+\l'5i'
+.br
+.LP
+.SH
+SYNOPSYS
+.LP
+.LP
+\fC
+.DS L
+
+    import (
+        'clive/cmd'
+        ...
+    )
+    
+.DE
+\fR
+.LP
+\fC
+.DS L
+
+    ; Go install clive/...
+    
+.DE
+\fR
+.LP
+.LP
+.SH
+DESCRIPTION
+.LP
+Clive commands are written in the Go programming language.
+.LP
+External packages are not to be imported directly from their source repositories.
+Instead, they should be installed under the\fC clive/x/...\fR path and
+then imported from there (to survive to incompatible upgrades made by their
+authors).
+.LP
+The compiler requires modifications as made to the Lsub fork of the standard
+Go compiler.
+.LP
+In particular, there is a\fC close\fR operation for channels that accepts
+an error indication and can be used both by the sender and the receiver.
+A new\fC cerror\fR operation retrieves the error causing the close of a
+channel. The send operation can be used as a value to see if the send could
+proceed or the channel was closed. For example:
+.LP
+\fC\fB [:]\fC:
+.br
+.DS L
+
+    c := make(chan []byte, 0)
+    for i := 0; i < 10; i++ {
+    ok := c <- []byte(fmt.Sprintf('<%d>', i))
+        if !ok {
+            dbg.Fatal(cerror(c))
+        }
+    }
+            close(c, 'oops')
+    
+.DE
+\fR
+.LP
+.LP
+The runtime provides support for application contexts, which is also missing
+in the standard (non-lsub) Go.
+.LP
+Most system I/O happens through channels packaged in\fC nchan.Conn\fR structures.
+These bridge external pipes and connections to channels.
+.LP
+Most application I/O happens through\fC interface{}\fR channels, usually
+by calling\fC clive/cmd\fR functions. See intro(1) for a description of
+the environment variables used when compilying, and for conventions regarding
+I/O.
+.LP
+The Go(1) command can be used to adjust them and run the standard\fC go\fR
+command to compile and operate on system source.
+.LP
+But for a few pages (including this one), the manual pages in this section
+are generated using\fC godoc\fR from the system source.
+.LP
+.SH
+EXAMPLES
+.LP
+To learn how to use the\fC clive/ch\fR package:
+.LP
+\fC\fB [:]\fC:
+.br
+.DS L
+
+    ; doc clive/ch
+    
+.DE
+\fR
+.LP
+or
+.LP
+\fC\fB [:]\fC:
+.br
+.DS L
+
+    ; doc 2 clive/ch
+    
+.DE
+\fR
+.LP
+.LP
+To compile the entire system:
+.LP
+\fC\fB [:]\fC:
+.br
+.DS L
+
+    ; cd /zx/sys/src/clive
+    ; Go install ./...
+    
+.DE
+\fR
+.LP
+.LP
+The eco(1) command source is a good example for a simple Clive command.
+.LP
+.SH
+SOURCE
+.LP
+.IP \(bu
+\fC/zx/sys/src/clive\fR
+.IP \(bu
+\fC/zx/bin/rc\fR
+.LP
+.LP
+.LP
+.SH
+BUGS
+.LP
+Yes. It's a research system. Nevertheless, we are using it as our computing
+environment for most daily work.
+.LP
+.LP
+.br
+\l'5i'
+.br
+.LP
+\fB User's manual.\fR\fB Section 2.\fR Copyright © LSUB 2014-2016
+.br
+.br
+

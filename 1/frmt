@@ -1,0 +1,47 @@
+FRMT(1): format text files
+.LP
+.br
+\l'5i'
+.br
+.LP
+.SH
+USAGE
+.LP
+.LP
+\fC
+.DS L
+
+    usage: frmt [-Dru] [-t tabwid] [-w wid] {file}
+        -D: debug
+        -r: right justify
+        -t tabwid: set tab width (default $tabstop or 8)
+        -u: use unix out
+        -w wid: set max line width (default is 80)
+    
+.DE
+\fR
+.LP
+.LP
+.SH
+DESCRIPTION
+.LP
+\fI Frmt\fR formats text files so that they have paragraphs with lines
+not longer than a maximum width. If the standard input is a terminal, its
+width is used by default. Indented lines preserve their indentation.
+.LP
+.SH
+SOURCE
+.LP
+.IP \(bu
+\fC/zx/sys/src/clive/cmd/frmt\fR
+.LP
+.LP
+.LP
+.br
+\l'5i'
+.br
+.LP
+\fB User's manual.\fR\fB Section 1.\fR Copyright © LSUB 2014-2016
+.br
+.br
+

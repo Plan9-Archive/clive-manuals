@@ -1,0 +1,45 @@
+ECO(1): echo
+.LP
+.br
+\l'5i'
+.br
+.LP
+.SH
+USAGE
+.LP
+.LP
+\fC
+.DS L
+
+    usage: eco [-Dmnu] [-i chan] [-o chan] {arg}
+        -D: debug
+        -i chan: echo input from this chan (for testing other tools)
+        -m: issue one message per arg
+        -n: don't add a final newline
+        -o chan: output to this chan (for testing other tools)
+        -u: use unix out
+    
+.DE
+\fR
+.LP
+.LP
+.SH
+DESCRIPTION
+.LP
+\fI Eco\fR is to Clive what\fI echo\fR is to UNIX.
+.LP
+.SH
+SOURCE
+.LP
+.IP \(bu
+\fC/zx/sys/src/clive/cmd/eco\fR
+.LP
+.LP
+.br
+\l'5i'
+.br
+.LP
+\fB User's manual.\fR\fB Section 1.\fR Copyright © LSUB 2014-2016
+.br
+.br
+

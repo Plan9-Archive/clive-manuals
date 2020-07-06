@@ -1,0 +1,84 @@
+XZX(1): export local files using the zx file protocol
+.LP
+.br
+\l'5i'
+.br
+.LP
+.SH
+USAGE
+.LP
+.LP
+\fC
+.DS L
+
+    usage: xzx [-ADZnsv] [-a addr] [-p port] {spec}
+        -A: auth debug
+        -D: debug
+        -Z: verbose debug
+        -a addr: service address (*!*!zx by default)
+        -n: no auth
+        -p port: tcp server port (8002 by default)
+        -s: use writesync for caches
+        -v: report users logged in/out (verbose)
+
+        spec is name | name!file | name!file!flags
+        spec flags are ro | rw | ncro | ncrw
+    
+.DE
+\fR
+.LP
+.LP
+.SH
+DESCRIPTION
+.LP
+\fI Xzx\fR serves the named file trees using zx. Each tree is specified
+as either\fC name\fR or\fC name!file\fR or\fC name!file!flags\fR. The name
+indicates the name used for the tree, the file (name) indicates the directory
+to serve (by default the same of name), and the flags indicate how to serve
+it (by default read write and using a memory cache).
+.LP
+Known flags are\fC ro\fR (read-only) or\fC rw\fR (read-write), perhaps
+prefixed with\fC nc\fR if no in-memory cache is desired.
+.LP
+.SH
+EXAMPLE
+.LP
+Serve the files at\fC /lsub\fR in read-write mode using an in-memory cache,
+and the files at\fC /dump\fR without caching in read-only mode.
+.LP
+.LP
+\fC
+.DS L
+
+    ; xzx -sv  'lsub!/lsub!rw' 'dump!/dump!ncro'
+    
+.DE
+\fR
+.LP
+.LP
+.SH
+SOURCE
+.LP
+.IP \(bu
+\fC/zx/sys/src/clive/cmd/xzx\fR
+.LP
+.LP
+.SH
+SEE ALSO
+.LP
+.IP \(bu
+zxfuse(1) to import exported trees.
+.IP \(bu
+intro(1) to learn how to use name spaces to access them.
+.LP
+.LP
+.LP
+.LP
+.br
+\l'5i'
+.br
+.LP
+\fB User's manual.\fR\fB Section 1.\fR Copyright © LSUB 2014-2016
+.br
+.br
+

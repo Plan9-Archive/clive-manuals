@@ -1,0 +1,87 @@
+ON(1): notify the user or run commands when files or user status change
+.LP
+.br
+\l'5i'
+.br
+.LP
+.SH
+USAGE
+.LP
+.LP
+\fC
+.DS L
+
+    usage: on [-1Du] file [cmd...]
+        -1: terminate after the first change
+        -D: debug
+        -u: don't use unix out
+
+        file may be 'user', 'idle', 'busy' and 'wakeup'
+        to run the command when the user becomes...
+    
+.DE
+\fR
+.LP
+.LP
+.SH
+DESCRIPTION
+.LP
+\fI On\fR watches for file system or user status changes and runs a command
+when such event happens. If no command is given the changed file name,
+or the new user status, is printed. When a command is given, the command
+is executed with any '\fC%\fR' sign replaced with the name for the changed
+file or the new user status.
+.LP
+If the\fI file\fR is a directory it is considered as changed when either
+the directory or its contents change. But there is no recursion to sub-directories.
+.LP
+When\fI file\fR is\fC idle\fR or\fC busy\fR the command is run when the
+user becomes idle or ceases being idle. When\fI file\fR is\fC wakeup\fR
+the command runs when the terminal resumes from sleep. When\fI file\fR
+is\fC user\fR the command runs upon any of these events.
+.LP
+.SH
+EXAMPLES
+.LP
+.LP
+Useful to run when editing sources:\fC
+.DS L
+
+    ; on . Inst -v
+    
+.DE
+\fR
+.LP
+Or perhaps\fC
+.DS L
+
+    ; on . Test -v
+    
+.DE
+\fR
+.LP
+Synchronize replicas when resuming from sleep:\fC
+.DS L
+
+    ; on wakeup zxsync -v
+    
+.DE
+\fR
+.LP
+.LP
+.SH
+SOURCE
+.LP
+.IP \(bu
+\fC/zx/sys/src/clive/cmd/on\fR
+.LP
+.LP
+.LP
+.br
+\l'5i'
+.br
+.LP
+\fB User's manual.\fR\fB Section 1.\fR Copyright © LSUB 2014-2016
+.br
+.br
+

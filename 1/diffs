@@ -1,0 +1,69 @@
+DIFFS(1): compare zx files for differences
+.LP
+.br
+\l'5i'
+.br
+.LP
+.SH
+USAGE
+.LP
+.LP
+\fC
+.DS L
+
+    usage: diffs [-Dlqu] file [file]
+        -D: debug
+        -l: long output
+        -q: quiet output (report which files differ)
+        -u: use unix out
+    
+.DE
+\fR
+.LP
+.LP
+.SH
+DESCRIPTION
+.LP
+\fI Diffs\fR compares files for differences, similar to the UNIX\fC diff\fR
+command. One set of files to compare is given through the command input
+and the other as an argument. Or both are given as arguments.
+.LP
+.SH
+EXAMPLE
+.LP
+Compare two trees rooted at\fC /tmp/echo\fR and\fC ./echo\fR and report
+the differences:
+.LP
+\fC
+.DS L
+
+    ; diffs -u /tmp/echo,- echo,-
+    
+.DE
+\fR
+.LP
+.LP
+Note that you might use more elaborate predicates, for example to select
+just Go source files.
+.LP
+.SH
+SOURCE
+.LP
+.IP \(bu
+\fC/zx/sys/src/clive/cmd/diffs\fR
+.LP
+.LP
+.SH
+BUGS
+.LP
+This tool was written for text files and does not handle binary files,
+but it should.
+.LP
+.br
+\l'5i'
+.br
+.LP
+\fB User's manual.\fR\fB Section 1.\fR Copyright © LSUB 2014-2016
+.br
+.br
+

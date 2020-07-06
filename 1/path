@@ -1,0 +1,44 @@
+PATH(1): PATH
+.LP
+.br
+\l'5i'
+.br
+.LP
+.SH
+USAGE
+.LP
+.LP
+\fC
+.DS L
+
+    usage: path [-Dbd] [-r dir] {name}
+        -D: debug
+        -b: print base names
+        -d: print parent directories
+        -r dir: print paths relative to dir
+    
+.DE
+\fR
+.LP
+.LP
+.SH
+DESCRIPTION
+.LP
+\fI Path\fR prints cleaned paths for its arguments. By default it prints
+absolute paths.
+.LP
+.SH
+SOURCE
+.LP
+.IP \(bu
+\fC/zx/sys/src/clive/cmd/path\fR
+.LP
+.LP
+.br
+\l'5i'
+.br
+.LP
+\fB User's manual.\fR\fB Section 1.\fR Copyright © LSUB 2014-2016
+.br
+.br
+

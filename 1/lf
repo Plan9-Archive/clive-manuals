@@ -1,0 +1,127 @@
+LF(1): list files
+.LP
+.br
+\l'5i'
+.br
+.LP
+.SH
+USAGE
+.LP
+.LP
+\fC
+.DS L
+
+    usage: lf [-Dgu] {file}
+        -D: debug
+        -g: get contents
+        -u: unix IO
+    
+.DE
+\fR
+.LP
+.LP
+.SH
+DESCRIPTION
+.LP
+\fI Lf\fR lists files into standard output. This means that\fI lf\fR sends
+their directory entries to the standard output channel. Under flag\fC -g\fR
+it sends not just the file metadata, but also the file data. Further commands
+in the command line pipe-line may be used to actually print the listed
+files in the desired format, or to apply any other operation to them.
+.LP
+.SH
+EXAMPLES
+.LP
+List files in the home directory:
+.LP
+\fC
+.DS L
+
+    ; lf $home,1 | pf
+    /zx/usr/nemo
+    /zx/usr/nemo/acme
+    /zx/usr/nemo/bin
+    ...
+    
+.DE
+\fR
+.LP
+Or
+.LP
+\fC
+.DS L
+
+    ; lf -u $home,1
+    
+.DE
+\fR
+.LP
+.LP
+Long listing:
+.LP
+\fC
+.DS L
+
+    ; lf | pf -l
+    
+.DE
+\fR
+.LP
+.LP
+Copy all files at\fC /tmp\fR:
+.LP
+\fC
+.DS L
+
+    ; lf -g , | pf -o /tmp -w
+    
+.DE
+\fR
+.LP
+.LP
+List all files with names ending in\fC .go\fR at the tree where we are:
+.LP
+\fC
+.DS L
+
+    lf -u ,~*.go
+    
+.DE
+\fR
+.LP
+.LP
+List all files in\fC /bin\fR or\fC /cin\fR with names starting with\fC
+zx\fR:
+.LP
+\fC
+.DS L
+
+    lf '/,path~/[bc]in/zx*' | pf
+    
+.DE
+\fR
+.LP
+.LP
+.SH
+SOURCE
+.LP
+.IP \(bu
+\fC/zx/sys/src/clive/cmd/lf\fR
+.LP
+.LP
+.SH
+SEE ALSO
+.LP
+.IP \(bu
+pf(1), print files from input
+.LP
+.LP
+.LP
+.br
+\l'5i'
+.br
+.LP
+\fB User's manual.\fR\fB Section 1.\fR Copyright © LSUB 2014-2016
+.br
+.br
+

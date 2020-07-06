@@ -1,0 +1,84 @@
+ZXPULL(1): pull changes for a replica
+.LP
+.br
+\l'5i'
+.br
+.LP
+.SH
+USAGE
+.LP
+.LP
+\fC
+.DS L
+
+    usage: zxpull [-Dabnuv] file
+        -D: debug
+        -a: all
+        -b: blind
+        -n: dry run
+        -u: don't use unix out
+        -v: verbose
+    
+.DE
+\fR
+.LP
+.LP
+.SH
+DESCRIPTION
+.LP
+\fI Zxpull\fR pulls changes from a remote tree into a local replica. It
+compares local and remote changes and decides which changes must be pushed
+and which ones must be pulled. The newest change wins if there is a conflicting
+change. File removes are noted and using the modification time for their
+directory. If a directory is added or removed, inner files and directories
+are added or removed as well no matter if the other replica has changes
+for such inner files. See zxrepl(1) for usage examples.
+.LP
+Flag\fC -a\fR pulls all the changes from the remote without paying attention
+to any local file or change made. This flag is meant to initialize the
+file tree by making it equal to the remote replica after the replica has
+been created, but it can be used at any time and will discard all local
+changes in favor of the remote tree.
+.LP
+Flag\fC -b\fR does not consider local changes when pulling and propagates
+all changes made in the remote tree to the local one.
+.LP
+If no argument is given,\fI zxpull\fR pulls all replicas found at\fC /u/lib/repl\fR.
+.LP
+When given, he\fI file\fR argument names the replica and the database files.
+The replica is the basename for\fI file\fR. The local database file is\fI
+file\fR with '\fC.ldb\fR' appended. The remote database file is\fI file\fR
+with '\fC.rdb\fR' appended. If\fI file\fR does not contain '\fC/\fR' then
+'\fC/u/lib/repl/\fR' is prepended to it.
+.LP
+Metadata changes at the root of the replica are always ignored.
+.LP
+.SH
+SOURCE
+.LP
+.IP \(bu
+\fC/zx/sys/src/clive/cmd/zxpull\fR
+.LP
+.LP
+.SH
+SEE ALSO
+.LP
+.IP \(bu
+zxrepl(1) to create replicas.
+.IP \(bu
+zxpush(1) to push changes.
+.IP \(bu
+zxsync(1) to synchronize changes.
+.LP
+.LP
+.LP
+.LP
+.LP
+.br
+\l'5i'
+.br
+.LP
+\fB User's manual.\fR\fB Section 1.\fR Copyright © LSUB 2014-2016
+.br
+.br
+

@@ -1,0 +1,58 @@
+
+SYNOPSYS
+
+import "clive/work"
+
+var Debug bool
+func NewPool(n int) *Pool
+type Pool struct { ... }
+    func NewPool(n int) *Pool
+
+DESCRIPTION
+
+A pool of worker processes.
+
+CONSTANTS
+
+TYPES
+
+type Pool struct {
+	// contains filtered or unexported fields
+}
+    A pool of work to do.
+
+func NewPool(n int) *Pool
+    create a pool of workers with up to n concurrent works.
+
+func (p *Pool) Call(donec chan bool, fn func()) chan bool
+    Run fn in a worker from the pool. If there is no worker available, run the
+    function in the caller process. Either way, return a chan that is sent-to
+    when the call completes. The channel is the one passed or a new one if it is
+    nil.
+
+func (p *Pool) Close()
+    Terminate the pool. Running functions continue to run but no further work is
+    accepted causing a panic instead.
+
+func (p *Pool) Go(donec chan bool, fn func()) chan bool
+    Run fn in a worker from the pool. If there is no worker available, await
+    until there is one Either way, return a chan that is sent-to when the call
+    completes. The channel is the one passed or a new one if it is nil.
+
+func (p *Pool) Wait()
+    Wait until all workers are done, closing if the pool is not yet closed.
+
+FUNCTIONS
+
+VARIABLES
+
+var (
+	Debug bool
+)
+
+.DE
+.LP
+\fBUser's manual, 2nd ed. Section 2\fR Copyright © LSUB 2014-2016
+.br
+.br
+

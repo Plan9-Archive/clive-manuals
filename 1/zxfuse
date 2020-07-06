@@ -1,0 +1,120 @@
+ZXFUSE(1): import remote zx file trees through FUSE
+.LP
+.br
+\l'5i'
+.br
+.LP
+.SH
+USAGE
+.LP
+.LP
+\fC
+.DS L
+
+    zxfs: No such file or directory
+    
+.DE
+\fR
+.LP
+.LP
+.SH
+DESCRIPTION
+.LP
+\fI Zxfuse\fR imports the named address and serves the imported zx file
+tree through the local FUSE interface.
+.LP
+If the address is a file existing in the local file tree, a local ZX service
+is started for that file and then mounted through FUSE. If the address
+is a network address, the remote file is imported.
+.LP
+The tree is mounted at\fC /n/zx\fR by default unless a mount point\fC mnt\fR
+is supplied in the command line.
+.LP
+By default an in-memory cache is kept for the remote tree and write operations
+are accepted. The cache performs delayed writes and never evicts its contents.
+It is suggested not to use the cache when mounting a dump file system.
+The cache is synced after one second of inactivity regarding writes and
+also once per minute. Unmounting the file system syncs the cache as well.
+.LP
+When using the in-memory cache and a remote tree reached through the network,
+temporary disconnections are tolerated. The file system may be used (and
+updated) during disconnections, but any access to uncached content will
+fail with an i/o error.
+.LP
+Under flag\fC -x\fR the program re-exports the cached tree to the given
+address. This can be used to let speakers of the zx file system protocol
+leverage the cache kept by this program without going through FUSE.
+.LP
+.SH
+EXAMPLE
+.LP
+Mount the zx file tree from\fC nautilus\fR at\fC /n/zx\fR and export the
+cache at the local unix network under the\fC zx\fR service name.
+.LP
+.LP
+\fC
+.DS L
+
+    ; zxfuse -x unix!*!zx tcp!nautilus!zx!main /n/zx
+    
+.DE
+\fR
+.LP
+.LP
+See who is using the file system and force a sync of the cache.
+.LP
+.LP
+\fC
+.DS L
+
+    ; grep user /n/zx/Ctl
+    user: rfs:95.122.101.57:63257 nemo as nemo
+    ; echo sync >/n/zx/Ctl
+    
+.DE
+\fR
+.LP
+.LP
+Mount the dump, uncached:
+.LP
+.LP
+\fC
+.DS L
+
+    ; zxfuse -n tcp!server!zx!dump /dump &
+    
+.DE
+\fR
+.LP
+.LP
+.SH
+SOURCE
+.LP
+.IP \(bu
+\fC/zx/sys/src/clive/cmd/zxfuse\fR
+.LP
+.LP
+.SH
+BUGS
+.LP
+The errors reported through FUSE are many times a permission denied when
+other things happen, and the actual error is printed by the server. This
+is so for portability, because some of our UNIX kernels have problems with
+other error types when they come from FUSE. This must be addressed in the
+future.
+.LP
+.SH
+SEE ALSO
+.LP
+.IP \(bu
+xzx(1) to export trees to the network.
+.LP
+.LP
+.br
+\l'5i'
+.br
+.LP
+\fB User's manual.\fR\fB Section 1.\fR Copyright © LSUB 2014-2016
+.br
+.br
+

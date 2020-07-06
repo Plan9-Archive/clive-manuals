@@ -1,0 +1,67 @@
+DOC(1): clive manual documents
+.LP
+.br
+\l'5i'
+.br
+.LP
+.SH
+USAGE
+.LP
+.LP
+\fC
+.DS L
+
+    usage: doc [sec] page
+    
+.DE
+\fR
+.LP
+.LP
+.SH
+DESCRIPTION
+.LP
+\fI doc\fR prints the named manual page in its output. Section 1 contains
+commands, section 2 is by convention for packages written in go. Section
+3 is for conventions and file formats.
+.LP
+.SH
+EXAMPLE
+.LP
+Print the manual page for the manual:
+.LP
+\fC
+.DS L
+
+    ; doc doc
+    ...
+    
+.DE
+\fR
+.LP
+List documentation for package\fC clive/nchan\fR
+.LP
+\fC
+.DS L
+
+    ; doc clive/nchan
+    
+.DE
+\fR
+.LP
+.LP
+.SH
+SOURCE
+.LP
+.IP \(bu
+\fC/zx/bin/rc/doc\fR
+.LP
+.LP
+.LP
+.br
+\l'5i'
+.br
+.LP
+\fB User's manual.\fR\fB Section 1.\fR Copyright © LSUB 2014-2016
+.br
+.br
+

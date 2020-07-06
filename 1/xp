@@ -1,0 +1,130 @@
+XP(1): evaluate expressions
+.LP
+.br
+\l'5i'
+.br
+.LP
+.SH
+USAGE
+.LP
+.LP
+\fC
+.DS L
+
+    usage: xp [-DFLYqu] [expr]
+        -D: debug
+        -F: report known functions and exit
+        -L: debug lex
+        -Y: debug yacc
+        -q: do not print values as they are evaluated
+        -u: use unix out
+    
+.DE
+\fR
+.LP
+.LP
+.SH
+DESCRIPTION
+.LP
+\fI Xp\fR evaluates the expression given as an argument, or those in its
+standard input if none is given. When using standard input, each line is
+parsed and evaluated as a single expression. The expressions may involve
+file attributes. Thus,\fI xp\fR replaces the venerable UNIX\fC test\fR
+command.
+.LP
+The usual arithmetic and logic operators can be used, Values in operations
+are considered as unsigned integers, integers, floating point numbers,
+strings, or booleans, depending on the context.
+.LP
+The following functions are known to\fI xp\fR, all operate on floating
+point numbers:
+.LP
+\fC
+.DS L
+
+    abs   asin  atanh cosh  floor log2  sqrt  trunc
+    acos  asinh cbrt  exp   log   sin   tan   Γ
+    acosh atan  cos   exp2  log10 sinh  tanh
+    
+.DE
+\fR
+.LP
+.LP
+A name that starts with '\fC%\fR' is considered a conversion for\fC Printf\fR
+and can be used as a function to print the argument with such conversion.
+.LP
+Any name that is not a function name and is not a conversion can be used
+as a function to ask for the value of a file attribute with such name.
+The names\fC r\fR,\fC w\fR, and\fC x\fR can be used as attribute names
+and evaluate to a boolean value indicating if the file has any of the read,
+write, or execute permissions set.
+.LP
+Text enclosed in double quotes is understood always as a name. Also, after
+calling a file attribute as a function, the next non-blank word is understood
+as a name, including characters like\fC /\fR,\fC -\fR, etc., which would
+become operators in other places. This is a helper to specify file paths
+in a convenient way.
+.LP
+A string in square brackets represents a time. This can be used with the
+relational operators to compare against attributes that indicate times.
+The string may use any format understood by the [cmd/opt(2)] package.
+.LP
+If the last computed yields a value of\fC true\fR the command exits with
+success, and if it is\fC false\fR with failure. This, along with flag\fC
+-q\fR, is useful to evaluate expressions as shell conditions without printing
+their value.
+.LP
+.SH
+EXAMPLES
+.LP
+.LP
+See if the length of the file is greater than 3 Mbytes and print\fC y\fR
+if it is.\fC
+.DS L
+
+    ; xp -q size afile '>' 3m && echo y
+    
+.DE
+\fR
+.LP
+Print the mtime for a file\fC
+.DS L
+
+    ; xp mtime afile
+    2015-05-08 11:35:28
+    
+.DE
+\fR
+.LP
+See if the file was changed since 2013-01-02 3pm\fC
+.DS L
+
+    ; xp mtime afile '>' '[2013-01-02 3pm]'
+    false
+    
+.DE
+\fR
+.LP
+Print 4KiB as a 32bit binary number [
+.LP
+; xp '%064b (4\fB 1024)' 00000000000000000001000000000000\fR
+.LP
+]
+.LP
+.LP
+.SH
+SOURCE
+.LP
+.IP \(bu
+[/zx/sys/src/clive/cmd/xp[
+.LP
+.LP
+.LP
+.br
+\l'5i'
+.br
+.LP
+\fB User's manual.\fR\fB Section 1.\fR Copyright © LSUB 2014-2016
+.br
+.br
+

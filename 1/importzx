@@ -1,0 +1,41 @@
+IMPORTZX(1): import clive file trees
+.LP
+.br
+\l'5i'
+.br
+.LP
+.SH
+USAGE
+.LP
+.LP
+\fC
+.DS L
+
+    usage: Importzx
+    
+.DE
+\fR
+.LP
+.LP
+.SH
+DESCRIPTION
+.LP
+\fI Importzx\fR imports the clive file trees into the terminal for UNIX.
+The mount points are\fC /zx,\fR\fC /dump,\fR and\fC /once.\fR
+.LP
+.SH
+SOURCE
+.LP
+.IP \(bu
+\fC/zx/bin/*/Importzx\fR
+.LP
+.LP
+.LP
+.br
+\l'5i'
+.br
+.LP
+\fB User's manual.\fR\fB Section 1.\fR Copyright © LSUB 2014-2016
+.br
+.br
+

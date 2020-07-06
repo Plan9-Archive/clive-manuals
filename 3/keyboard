@@ -1,0 +1,107 @@
+KEYBOARD(3): keyboard sequences
+.LP
+.br
+\l'5i'
+.br
+.LP
+.SH
+SYNOPSYS
+.LP
+.LP
+\fC
+.DS L
+
+    Alt key...
+    
+.DE
+\fR
+.LP
+.LP
+.SH
+DESCRIPTION
+.LP
+Text input as implemented by Ink permit composition of keys. To compose
+a key, type\fI Alt\fR and then one or more keys. If the sequence of keys
+is a prefix of a valid sequence, the keys will not be shown, and will be
+collected. Once a valid sequence has been typed, the corresponding key
+will be inserted instead of the full sequence. If the sequence is not valid,
+the original keys typed will be shown, and composition will finish.
+.LP
+The composition sequences are those of Plan 9 from Bell Labs, but for typing
+of unicode code points directly, which are usually provided using the underlying
+terminal OS keyboard facilities. From the Plan 9 man page...
+.LP
+.IP \(bu
+A repeated symbol gives a variant of that symbol, e.g., ?? yields ¿.
+.IP \(bu
+ASCII digraphs for mathematical operators give the corresponding operator,
+e.g., <= yields ≤.
+.IP \(bu
+Two letters give the corresponding ligature, e.g., AE yields Æ.
+.IP \(bu
+Mathematical and other symbols are given by abbreviations for their names,
+e.g., pg yields ¶.
+.IP \(bu
+Chess pieces are given by a w or b followed by a letter for the piece (k
+for king, q for queen, r for rook, n for knight, b for bishop, or p for
+pawn), e.g., wk for a white king.
+.IP \(bu
+Greek letters are given by an asterisk followed by a corresponding latin
+letter, e.g.,\fC *\fRd yields δ.
+.IP \(bu
+Cyrillic letters are given by an at sign followed by a corresponding latin
+letter or letters, e.g., @ya yields я.
+.IP \(bu
+Script letters are given by a dollar sign followed by the corresponding
+regular letter, e.g., $F yields ℱ.
+.IP \(bu
+A digraph of a symbol followed by a letter gives the letter with an accent
+that looks like the symbol, e.g., ,c yields ç.
+.IP \(bu
+Two digits give the fraction with that numerator and denominator, e.g.,
+12 yields ½.
+.IP \(bu
+The letter s followed by a character gives that character as a superscript,
+e.g., s1 yields ⁱ. These characters are taken from the Unicode block 0x2070;
+the 1, 2, and 3 superscripts in the Latin-1 block are available by using
+a capital S instead of s.
+.IP \(bu
+Sometimes a pair of characters give a symbol related to the superimposition
+of the characters, e.g., cO yields ©.
+.IP \(bu
+A mnemonic letter followed by $ gives a currency symbol, e.g., l$ yields
+£.
+.LP
+.LP
+.LP
+.LP
+.LP
+.LP
+.LP
+.LP
+.LP
+.LP
+.LP
+.LP
+.LP
+.LP
+.SH
+SEE ALSO
+.LP
+.IP \(bu
+net.ink(2) for the Ink package.
+.IP \(bu
+ix(1) for the UI environment using this.
+.LP
+.LP
+.br
+\l'5i'
+.br
+.LP
+\fB User's manual.\fR\fB Section 3.\fR
+.LP
+.LP
+Copyright © LSUB 2014-2016
+.br
+.br
+

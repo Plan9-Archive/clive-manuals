@@ -1,0 +1,104 @@
+
+SYNOPSYS
+
+import "clive/sre"
+
+const Fwd = iota ...
+var Debug = false
+func Match(sre, text string) ([]string, error)
+func Repl(matches []string, s string) string
+func Compile(re []rune, dir Dir) (prg *ReProg, err error)
+func CompileStr(re string, dir Dir) (prg *ReProg, err error)
+type Dir int
+type Range struct { ... }
+type ReProg struct { ... }
+    func Compile(re []rune, dir Dir) (prg *ReProg, err error)
+    func CompileStr(re string, dir Dir) (prg *ReProg, err error)
+type Text interface { ... }
+
+DESCRIPTION
+
+Structural Regular Expressions on rune based text.
+
+Besides those understood by Sam, these ones have \&\\w and \&\\s to match unicode
+alpha and space runes (can be also used within character classes). Matching
+does not wrap if no further matches are found.
+
+CONSTANTS
+
+const (
+	Fwd = iota // compile for forward search in text
+	Bck        // compile for backward search in text
+)
+    Argument to Compile.
+
+TYPES
+
+type Dir int
+    Argument to Compile.
+
+type Range struct {
+	P0, P1 int
+}
+    A selection in the string implied by a regexp.
+
+type ReProg struct {
+	// contains filtered or unexported fields
+}
+    A compiled regexp
+
+func Compile(re []rune, dir Dir) (prg *ReProg, err error)
+    Compile re as a regexp to search forward or backward in text
+
+func CompileStr(re string, dir Dir) (prg *ReProg, err error)
+    Compile re as a regexp to match in text, forward if dir is Fwd, and backward
+    otherwise.
+
+func (prg *ReProg) Exec(txt Text, start int, end int) []Range
+    Execute prg to search in s starting at s[start] and not going past s[end],
+    when compiled to search forward. When compiled to search backward, it starts
+    at s[start] but goes backwards and considers s[end] the end of text. Like
+    ExecStr but for a general rune provider. Returns nil if there is no match.
+    Otherwise, the returned slice contains at 0 the match for the full
+    expression and in further elements the matching ranges for subexpressions
+    matched (i.e, \&\\1, \&\\2, ...). The matched substrings are s[range.P1:range.P1].
+
+func (prg *ReProg) ExecRunes(s []rune, start int, end int) []Range
+    Like Exec but for []rune See Exec for more details.
+
+func (prg *ReProg) ExecStr(s string, start int, end int) []Range
+    Like Exec but for strings. See Exec for more details.
+
+func (prg *ReProg) Match(text string) []string
+    Like Match, for a compiled sre.
+
+func (prg *ReProg) String() string
+    Debug: return a printable program, including the entire NFA machine program.
+
+type Text interface {
+	Len() int
+	Getc(at int) rune
+}
+    Interface for a rune provider to match a regexp against it.
+
+FUNCTIONS
+
+func Match(sre, text string) ([]string, error)
+    Match (forward) the given sre against the given string, return the
+    (sub)strings matching (nil if none) and any error.
+
+func Repl(matches []string, s string) string
+    Replace in the given string \&\\n with the corresponding entry in matches. Only
+    \&\\0 to \&\\9 accepted.
+
+VARIABLES
+
+var Debug = false
+    Set to true to enable debug of rexp execution.
+
+.DE
+.LP
+\fBUser's manual, 2nd ed. Section 2\fR Copyright © LSUB 2014-2016
+.br
+.br
+

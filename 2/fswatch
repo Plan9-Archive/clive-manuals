@@ -1,0 +1,44 @@
+
+SYNOPSYS
+
+import "clive/fswatch"
+
+func New() (*Watcher, error)
+type Watcher struct { ... }
+    func New() (*Watcher, error)
+
+DESCRIPTION
+
+file system watcher
+
+CONSTANTS
+
+TYPES
+
+type Watcher struct {
+	// contains filtered or unexported fields
+}
+    Watcher for file system changes (unix; not ZX)
+
+func New() (*Watcher, error)
+    Create a new watcher
+
+func (w *Watcher) Add(p string) error
+    Add a file to the watcher list. Must be called before watching changes. If
+    the file is a directory all the files in it are also watched (w/o recur. for
+    subdirs)
+
+func (w *Watcher) Changes() chan string
+    Report changes through the returned chan.
+
+func (w *Watcher) Once()
+    Arrange for w to be done after the first change reported.
+
+FUNCTIONS
+
+.DE
+.LP
+\fBUser's manual, 2nd ed. Section 2\fR Copyright © LSUB 2014-2016
+.br
+.br
+

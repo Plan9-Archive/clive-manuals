@@ -1,0 +1,70 @@
+
+SYNOPSYS
+
+import "clive/txt"
+
+const Eins = Tedit(iota) ...
+func New(txt []rune) *Text
+func NewEditing(txt []rune) *Text
+type Edit struct { ... }
+type Edition interface { ... }
+type Interface interface { ... }
+type Mark struct { ... }
+type Tedit int
+type Text struct { ... }
+    func New(txt []rune) *Text
+    func NewEditing(txt []rune) *Text
+
+DESCRIPTION
+
+In-memory text with insertion, removal, selection, and marks
+
+CONSTANTS
+
+const (
+	Eins = Tedit(iota) // insert
+	Edel               // delete
+
+	// Edit flag (part of the last edit, new edit)
+	Esame = true
+	Enew  = false
+
+	// size arg for get
+	All = -1
+)
+
+TYPES
+
+type Edit struct {
+	Op    Tedit  // Eins | Edel
+	Off   int    // offset for the edit
+	Data  []rune // data inserted or deleted
+	Contd bool   // part of the previous edit regarding undo/redo
+}
+    Edition operation
+
+func (e Edit) String() string
+    Debug: return a printable edit string
+
+type Edition interface {
+	Interface
+	Undo() *Edit
+	Redo() *Edit
+	ContdEdit()
+}
+    Undoable text
+
+type Interface interface {
+	Len() int
+	Ins(data []rune, off int) error
+	Del(off, n int) []rune
+	Get(off int, n int) 
+.LP
+\fBUser's manual, 2nd ed. Section 2\fR
+
+	
+.DE
+Copyright © LSUB 2014-2016
+.br
+.br
+

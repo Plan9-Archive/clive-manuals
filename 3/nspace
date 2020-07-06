@@ -1,0 +1,116 @@
+NSPACE(3): name space conventions
+.LP
+.br
+\l'5i'
+.br
+.LP
+.SH
+SYNOPSYS
+.LP
+.LP
+\fC
+.DS L
+
+    ; NS=' / /
+        /zx tcp!server!zx
+    '
+    ; Importzx
+    
+.DE
+\fR
+.LP
+.LP
+.SH
+DESCRIPTION
+.LP
+This page describes the conventions for the name space. The importzx(1)
+command imports the main tree which follows such conventions.
+.LP
+Clive terminals operate on hosted environments. Clive servers may be native
+(not yet, really) or hosted.
+.LP
+The main tree is usually mounted at\fC /zx\fR and its dump can be found
+at\fC /dump\fR. The\fC /once\fR tree keeps stuff not be dumped. The dump
+contains a frozen version of the main tree for each day. Directories named\fC
+tmp\fR or\fC tmp.*\fR or\fC *.tmp\fR or containing a file named\fC NODUMP\fR
+are never copied to the dump. Files with names starting with a dot character
+(\fC.\fR) are never dumped.
+.LP
+The name space is usually specified by either a environment variable (\fC$NS\fR)
+or by a file at\fC $HOME/NS\fR. In both cases, the text describes the name
+space. The environment variable may be just the path for a file describing
+the name space, and acts as an indirection to that file in such a case.
+.LP
+The description of the name space is a series of lines, one per mount entry.
+A line can be a printed directory entry (with attribute/value pairs, as
+expected). In that case, the path for the directory is used as the mount
+point and the directory is mounted there.
+.LP
+A line can be also a pair of strings, the first is the path for the mount
+point and the second refers to the resource mounted there. The resource
+may be a path, in which case it refers to a local file, or it may be a
+resource address as described in addr(3), to refer to the addressed resource.
+.LP
+For example,
+.LP
+\fC
+.DS L
+
+    /    /
+    /zx    unix!localhost!zx
+    
+.DE
+\fR
+.LP
+.LP
+The name space is a prefix table and the longest prefix wins, but each
+prefix may have more than one entry (i.e., be a union).
+.LP
+These files can be expected in the name space.\fC /bin\fR local terminal
+binaries for the hosting system\fC /bin/rc\fR The Rc shell, always kept
+at the terminal\fC /once\fR Root of mounted non-archived main tree\fC /dump\fR
+Root of the mounted dumps\fC /dump/zx\fR Root of dump for the\fC zx\fR
+tree\fC /dump/zx/2014/0509/...\fR Copy of files for the named year and
+day\fC /zx\fR Root of the main tree\fC /zx/bin\fR Binaries\fC /zx/bin/rc\fR
+Portable scripts. Non portable scripts are kept on a per-architecture directory
+along with binaries.\fC /zx/bin/darwin_amd64\fR Binaries for OSX on amd64
+hosts.\fC /zx/bin/bsd_amd64\fR Binaries for BSD on amd64 hosts.\fC /zx/bin/linux_amd64\fR
+Binaries for Linux on amd64 hosts.\fC /zx/cfg\fR Copy of configuration
+for servers and terminals\fC /zx/doc\fR Documents\fC /zx/lib\fR System
+wide libraries (eg, bibliography, icons, etc.)\fC /zx/mail\fR Copy of system
+wide e-mail files\fC /zx/sys\fR Source for the system\fC /zx/sys/bin\fR
+To make\fC /sys\fR go compliant, should not be used. Use\fC /zx/bin/*\fR
+directories instead.\fC /zx/sys/doc\fR White papers for the system\fC /zx/sys/man\fR
+Source for manual pages.\fC /zx/sys/golang\fR Source for the lsub branch
+of the go compiler\fC /zx/sys/pkg\fR To make\fC /sys\fR go compliant.\fC
+/zx/sys/src\fR System source\fC /zx/sys/src/clive\fR Source for clive packages
+and binary commands\fC /zx/sys/src/clive/cmd\fR Source for clive binary
+commands\fC /zx/sys/src/clive/x\fR Source for external go packages (google
+code, etc.).\fC /zx/usr\fR Home and project directories\fC /zx/usr/web\fR
+Web pages\fC /zx/usr/p9p\fR Plan9ports copy\fC /x\fR Directory for xcmd(1)
+to execute commands on lsub systems.\fC /x/nautilus\fR Commands run at
+nautilus, see xcmd(1).\fC /x/nautilus/web\fR Web command run at nautilus,
+see xcmd(1).
+.LP
+.SH
+SEE ALSO
+.LP
+.IP \(bu
+Introduction to Clive and its commands: intro(1).
+.IP \(bu
+The command execution service: xcmd(1).
+.IP \(bu
+Addresses: addr(3).
+.LP
+.br
+\l'5i'
+.br
+.LP
+\fB User's manual.\fR\fB Section 3.\fR
+.LP
+.LP
+.LP
+Copyright © LSUB 2014-2016
+.br
+.br
+

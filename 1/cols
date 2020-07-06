@@ -1,0 +1,59 @@
+COLS(1): columnate words
+.LP
+.br
+\l'5i'
+.br
+.LP
+.SH
+USAGE
+.LP
+.LP
+\fC
+.DS L
+
+    usage: cols [-Du] [-n ncols] [-w wid] {file}
+        -D: debug
+        -n ncols: set number of columns
+        -u: use unix output
+        -w wid: set max line width
+    
+.DE
+\fR
+.LP
+.LP
+.SH
+DESCRIPTION
+.LP
+\fI Cols\fR columnates words writing one row at a time. First words go
+in the first row, then the second row and so on. Total text width is determined
+by using the underlying OS tty size, by default.
+.LP
+.SH
+EXAMPLE
+.LP
+list files in columns:
+.LP
+\fC
+.DS L
+
+    ; lf ,1 | cols -u
+    
+.DE
+\fR
+.LP
+.LP
+.SH
+SOURCE
+.LP
+.IP \(bu
+\fC/zx/sys/src/clive/cmd/cols\fR
+.LP
+.LP
+.br
+\l'5i'
+.br
+.LP
+\fB User's manual.\fR\fB Section 1.\fR Copyright © LSUB 2014-2016
+.br
+.br
+

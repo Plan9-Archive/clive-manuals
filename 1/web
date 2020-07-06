@@ -1,0 +1,63 @@
+WEB(1): serve web pages
+.LP
+.br
+\l'5i'
+.br
+.LP
+.SH
+SYNOPSYS
+.LP
+.LP
+\fC
+.DS L
+
+    usage: web [-l] [-p port] [-t port] [dir]
+        -l: localhost and TLS only
+        -p port: port used (8080 by default)
+        -t port: TLS port (8083 by default)
+    
+.DE
+\fR
+.LP
+.LP
+.SH
+DESCRIPTION
+.LP
+\fI Web\fR serves the given directory (or\fC /zx/usr/web\fR if none is
+given) to the web. The default port is\fC 8080\fR unless flag\fC -p\fR
+tells otherwise.
+.LP
+.SH
+EXAMPLE
+.LP
+Serve the files at\fC /n/web\fR to the web using port 80.
+.LP
+.LP
+\fC
+.DS L
+
+    ; web -p 80 /n/web
+    
+.DE
+\fR
+.LP
+.LP
+To keep the web safe despite using the development version of all Clive
+tools and packages, this command serves the underlying OS files and does
+not rely on ZX (yet).
+.LP
+.SH
+SOURCE
+.LP
+.IP \(bu
+\fC/zx/sys/src/clive/cmd/web\fR
+.LP
+.LP
+.br
+\l'5i'
+.br
+.LP
+\fB User's manual.\fR\fB Section 1.\fR Copyright © LSUB 2014-2016
+.br
+.br
+

@@ -1,0 +1,96 @@
+MVF(1): move files
+.LP
+.br
+\l'5i'
+.br
+.LP
+.SH
+USAGE
+.LP
+.LP
+\fC
+.DS L
+
+    usage: mvf [-Ddnuv] [src] dst | src1 src2... dstdir
+        -D: debug
+        -d: take always destination as a parent dir
+        -n: dry run; report moves but do not make them
+        -u: use unix output
+        -v: report moves
+    
+.DE
+\fR
+.LP
+.LP
+.SH
+DESCRIPTION
+.LP
+\fI Mvf\fR moves a single file (or directory) to a target name or multiple
+files to a target directory. The destination is the exact name of the new
+file, and it is overwritten if it already exists.
+.LP
+Unlike in UNIX, there is no doubt regarding what the target name is. It
+does not matter if the target is or not a directory and if it exists or
+not.
+.LP
+When a single file is named as a source in the arguments (although it might
+imply a tree of files!), the root of the named source (perhaps a single
+file) will become the named target.
+.LP
+When more than one single source is given (again, sources might imply full
+trees), the destination is always the parent of the source roots.
+.LP
+.SH
+EXAMPLES
+.LP
+Move file\fC ./1\fR to file\fC /tmp/2\fR.
+.LP
+\fC
+.DS L
+
+    ; lf 1 | mvf /tmp/2
+    
+.DE
+\fR
+.LP
+.LP
+Unlike in UNIX, this is an error in Clive, because the source is a file
+and the copy name is a directory:
+.LP
+\fC
+.DS L
+
+    ; lf 1 | mvf /tmp
+    
+.DE
+\fR
+.LP
+.LP
+.SH
+SOURCE
+.LP
+.IP \(bu
+\fC/zx/sys/src/clive/cmd/mvf\fR
+.LP
+.LP
+.SH
+SEE ALSO
+.LP
+.IP \(bu
+lf(1) to select files to move.
+.IP \(bu
+pf(1) to copy files.
+.IP \(bu
+rmf(1) to remove files.
+.LP
+.LP
+.LP
+.LP
+.br
+\l'5i'
+.br
+.LP
+\fB User's manual.\fR\fB Section 1.\fR Copyright © LSUB 2014-2016
+.br
+.br
+

@@ -1,0 +1,30 @@
+
+SYNOPSYS
+
+import "clive/snarf"
+
+func Get() (string, error)
+func Set(s string) error
+
+DESCRIPTION
+
+Access to the system clipboard.
+
+FUNCTIONS
+
+func Get() (string, error)
+    Get the clipboard text
+
+func Set(s string) error
+    Set the clipbard text
+
+BUGS
+
+BUG: As of now, only for darwin
+
+.DE
+.LP
+\fBUser's manual, 2nd ed. Section 2\fR Copyright © LSUB 2014-2016
+.br
+.br
+

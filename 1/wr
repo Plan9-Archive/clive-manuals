@@ -1,0 +1,138 @@
+WR(1): document writer
+.LP
+.br
+\l'5i'
+.br
+.LP
+.SH
+USAGE
+.LP
+.LP
+\fC
+.DS L
+
+    usage: wr [-DIPSehlmprsu] [-b dir] [-c sect] [-o file] [-w wid] {file}
+        -D: debug
+        -I: debug indents
+        -P: debug paragraphs
+        -S: debug split
+        -b dir: change the default refer bib dir
+        -c sect: with -h, generate a man page in the given section
+        -e: use spanish for labels
+        -h: generate html
+        -l: generate latex
+        -m: generate man page
+        -o file: generate a single output file
+        -p: generate pdf
+        -r: generate roff
+        -s: generate ps
+        -u: do not generate output for unix
+        -w wid: text width for text formats
+    
+.DE
+\fR
+.LP
+.LP
+.SH
+DESCRIPTION
+.LP
+\fI Wr\fR is a document writer that knows how to convert a simple format
+to one of raw text (for manual pages), troff source, LaTeX source, HTML,
+PostScript or PDF. It knows how to handle figures (including [cite pic(1)]
+source) and tables.
+.LP
+The output file(s) are generated in the directory where the command is
+run, unless flag\fC -o\fR is used to indicate an output file. In this case,
+output file(s) are generated in the directory of the indicated output file,
+and this may include extra files for figures using the output file name
+as a prefix.
+.LP
+The input file may have any name, but the suggested extension is\fC .w\fR
+for all\fC wr\fR input files.
+.LP
+.SH
+EXAMPLES
+.LP
+Generate text output for a file:
+.LP
+\fC
+.DS L
+
+    ; wr file
+    
+.DE
+\fR
+.LP
+Generate output for many of them
+.LP
+\fC
+.DS L
+
+    ; lf -g , | wr
+    
+.DE
+\fR
+.LP
+.LP
+Generate html and place the output at another directory (including any
+auxiliary files for figures):
+.LP
+\fC
+.DS L
+
+    ; wr -h -o /dest/dir/out.html file
+    
+.DE
+\fR
+.LP
+.LP
+Besides the file mentioned in the see-also section, all manual pages are
+also examples of the input format.
+.LP
+.SH
+SOURCE
+.LP
+.IP \(bu
+\fC/zx/sys/src/clive/cmd/wr\fR
+.LP
+.LP
+.SH
+SEE ALSO
+.LP
+.IP \(bu
+\fC/zx/sys/src/clive/cmd/wr/example\fR for an up to date example source
+file describing the input language.
+.IP \(bu
+The Wr document writer. Francisco Ballesteros, 2014, for an out of date
+but more readable description of the input language.
+.LP
+.LP
+.LP
+.SH
+BUGS
+.LP
+\fI Wr\fR does not generate PDF nor images on its own. For figures,\fI
+wr\fR relies on\fI convert\fR (from imagemagick) and a few scripts contained
+in both ghostscript and TeX to generate and convert EPS files. If there
+are errors while compiling a document with images, it might be that some
+of these packages are missing. Installing
+.IP \(bu
+Ghostscript-9.18.pkg, and
+.IP \(bu
+ImageMagick-6.9.1-0.pkg
+.LP
+.LP
+seem to suffice for OSX hosts, and you should add
+.IP \(bu
+mactex-20150613.pkg
+.LP
+if you want LaTeX with\fI pdflatex\fR to compile generated TeX.
+.LP
+.br
+\l'5i'
+.br
+.LP
+\fB User's manual.\fR\fB Section 1.\fR Copyright © LSUB 2014-2016
+.br
+.br
+

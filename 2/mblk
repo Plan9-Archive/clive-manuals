@@ -1,0 +1,61 @@
+
+SYNOPSYS
+
+import "clive/mblk/rwtest"
+
+func AsAConcFile(t Fataler, rw []Object, nops, maxoff, maxsz int)
+func AsAFile(t Fataler, rw Object, nops, maxoff, maxsz int)
+type Fataler interface { ... }
+type FullyReadable interface { ... }
+type Object interface { ... }
+type Resizeable interface { ... }
+
+DESCRIPTION
+
+Test tools for things that can be read and written.
+
+CONSTANTS
+
+TYPES
+
+type Fataler interface {
+	Fatalf(format string, args ...interface{})
+	Logf(format string, args ...interface{})
+	Fail()
+}
+    Usually testing.T or testing.B
+
+type FullyReadable interface {
+	Seek(int64, int) (int64, error)
+	Read([]byte) (int, error)
+}
+    Objects that implement this are tested by comparing the final contents of
+    the file.
+
+type Object interface {
+	WriteAt([]byte, int64) (int, error)
+	ReadAt([]byte, int64) (int, error)
+}
+    Objects that can be used in such tests.
+
+type Resizeable interface {
+	Truncate(int64) error
+}
+    Objects that implemented truncable are also tested for truncations and
+    resizes.
+
+FUNCTIONS
+
+func AsAConcFile(t Fataler, rw []Object, nops, maxoff, maxsz int)
+
+func AsAFile(t Fataler, rw Object, nops, maxoff, maxsz int)
+    If the object tested as a file has Truncate, it is also tested. Test a rw
+    object by comparing what a real file does and what it does. 10% of the
+    operations are resizes (if any) and the rest are half read, half writes.
+
+.DE
+.LP
+\fBUser's manual, 2nd ed. Section 2\fR Copyright © LSUB 2014-2016
+.br
+.br
+

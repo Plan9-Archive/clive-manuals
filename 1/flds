@@ -1,0 +1,104 @@
+FLDS(1): print fields
+.LP
+.br
+\l'5i'
+.br
+.LP
+.SH
+USAGE
+.LP
+.LP
+\fC
+.DS L
+
+    usage: flds [-1Du] [-F sep] [-o sep] {-r range} {file}
+        -1: fields separated by 1 run of the field delimiter string
+        -D: debug
+        -F sep: input field delimiter character(s) (or string under -1)
+        -o sep: output field delimiter string
+        -r range: print this range
+        -u: use unix out
+    
+.DE
+\fR
+.LP
+.LP
+.SH
+DESCRIPTION
+.LP
+\fI Flds\fR prints the requested fields for the given files. Fields are
+specified as ranges. A range may be a single line number, counting from
+1, or a pair of start and end field numbers separated by a '\fC,\fR' character.
+Negative field numbers count backwards from the end of the line (the last
+is\fC -1\fR and so on).
+.LP
+Multiple ranges may be given. A missing start number in a range means\fC
+1\fR, and a missing end number in a range means\fC -1\fR. If no range is
+given, '\fC,\fR' is implied. And, when such range is indicated, all fields
+are printed, one line at a time.
+.LP
+By default the field separator is a run of blanks. Flag\fC -F\fR changes
+the set of runes used as field separators to its argument.
+.LP
+Flag\fC -1\fR indicates that fields are separated exactly by one instance
+of the separator string. Such string defaults to a tabulator character
+in this case, unless\fC -F\fR says otherwise.
+.LP
+Fields are printed in the order indicated by the ranges given (first range
+gets printed first). Output fields are separated by default using a tab
+character or the\fC sep\fR string if\fC -1\fR is used.
+.LP
+.SH
+EXAMPLES
+.LP
+Print the first two fields and the last one from the\fC ps\fR output:
+.LP
+\fC
+.DS L
+
+    ; ps | rf | flds -u -r 1,2 -r -1
+    
+.DE
+\fR
+.LP
+.LP
+In a file with fields separated with '\fC:\fR', and, perhaps with empty
+fields, print just the first and third fields in reverse order:
+.LP
+\fC
+.DS L
+
+    ; ps | rf | flds -u -1F: -r 3 -r 1
+    
+.DE
+\fR
+.LP
+.LP
+Replace the field separator '\fC:\fR' with '\fC,\fR' in all files under
+the current directory and update those files on disk:
+.LP
+\fC
+.DS L
+
+    ; gf , | flds -u -1F: -o, | pf -w
+    
+.DE
+\fR
+.LP
+.LP
+.SH
+SOURCE
+.LP
+.IP \(bu
+\fC/zx/sys/src/clive/cmd/flds\fR
+.LP
+.LP
+.LP
+.br
+\l'5i'
+.br
+.LP
+\fB User's manual.\fR\fB Section 1.\fR Copyright © LSUB 2014-2016
+.br
+.br
+

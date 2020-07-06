@@ -1,0 +1,8 @@
+This is a mirror of the clive manual pages in troff format. 
+
+These are not included in the clive source repository. 
+
+Original: http://lsub.org/sys/man
+
+The scripts included were used for processing the manual pages into a format usable with werc's manual app. 
+

@@ -1,0 +1,128 @@
+ADDR(3): network and resource addresses
+.LP
+.br
+\l'5i'
+.br
+.LP
+.SH
+SYNOPSYS
+.LP
+.LP
+\fC
+.DS L
+
+    network!address!service
+    protocol!network!address!service!tree!path
+    
+.DE
+\fR
+.LP
+.LP
+.SH
+DESCRIPTION
+.LP
+Network addresses are strings used by clive packages and other tools to
+name network services and end-points. They are also used by files and strings
+with name space descriptions. This page documents a few conventions.
+.LP
+An full network address has the form
+.LP
+\fC
+.DS L
+
+    network!address!service
+    
+.DE
+\fR
+.LP
+where network is the name of a network (\fCunix\fR,\fC tcp\fR, or\fC tls\fR,
+etc.) address is the name of a system in such network service is the name
+or number for a service
+.LP
+A partial network address is usually completed as follows:
+.IP \(bu
+\fChost\fR means\fC tcp!host!zx\fR
+.IP \(bu
+\fChost!port\fR means\fC tcp!host!port\fR
+.LP
+.LP
+.LP
+A full resource address as found in directory entries and name space elements
+has the form:
+.LP
+\fC
+.DS L
+
+    protocol!network!address!service!tree!path
+    
+.DE
+\fR
+.LP
+where protocol is the name of the protocol for the resource (eg.,\fC lfs\fR
+or\fC zx\fR)\fC network!address!service!\fR is a network address as described
+before. For\fC lfs\fR, this component is never present in the address.
+tree is the name of a resource tree (eg.,\fC main\fR,\fC dump\fR, etc.).
+For\fC lfs\fR, this component is the absolute path for the root of the
+local FS. path is the full path of a resource path within that tree (eg.,\fC
+/\fR).
+.LP
+The\fC lfs\fR protocol indicates access to a local ZX file tree. The\fC
+zx\fR protocol indicates access to a remote ZX file tree.
+.LP
+Commands and packages usually accept shorter versions and complete the
+addresses given if they are not full address. Refer to their documentation
+and/or source. The usual completion rules are as follows:
+.IP \(bu
+if no protocol is given,\fC zx!\fR is prepended to the address.
+.IP \(bu
+other elements may be missing, starting from the last element.
+.LP
+.LP
+For example:
+.IP \(bu
+\fClocalhost!zx\fR means\fC zx!tcp!localhost!zx!main!/\fR
+.IP \(bu
+\fCunix!localhost!zx\fR means\fC zx!unix!localhost!zx!main!/\fR
+.IP \(bu
+\fCunix!localhost!zx!main\fR means\fC zx!unix!localhost!zx!main!/\fR
+.IP \(bu
+\fClfs!/tmp\fR means\fC lfs!/tmp!/\fR
+.LP
+.LP
+.LP
+.LP
+.LP
+Popular network names are\fC tcp\fR,\fC tls\fR,\fC unix\fR, and\fC *\fR
+to represent any of the networks when providing addresses to be listened.
+.LP
+The\fC unix\fR networks lives only within a single UNIX machine and is
+not reacheable from outside.
+.LP
+The map between service names and (eg TCP) protocol numbers is built by
+calls to the\fC clive/net\fR package.
+.LP
+.SH
+EXAMPLES
+.LP
+.LP
+\fC
+.DS L
+
+    tcp!nautilus!zx
+    unix!*!zx
+    tcp!nautilus!zx!dump
+    *!*!zx
+    
+.DE
+\fR
+.LP
+.LP
+.LP
+.br
+\l'5i'
+.br
+.LP
+\fB User's manual.\fR\fB Section 3.\fR Copyright © LSUB 2014-2016
+.br
+.br
+

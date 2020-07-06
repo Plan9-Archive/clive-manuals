@@ -1,0 +1,17 @@
+
+SYNOPSYS
+
+import "clive/u/user"
+
+const Idle = State(iota) ...
+var IdleIval = 30 * time.Second ...
+func Becomes() (
+.LP
+\fBUser's manual, 2nd ed. Section 2\fR
+
+	
+.DE
+Copyright © LSUB 2014-2016
+.br
+.br
+

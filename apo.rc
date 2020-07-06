@@ -1,0 +1,12 @@
+#!/bin/rc
+for(d in $dirs)
+{
+	cd $d
+	files=`{ls}
+	for(f in $files)
+	{
+		sed 's/�/\''/g' $f > $f^.tmp
+		mv $f^.tmp $f
+	}
+	cd ..
+}

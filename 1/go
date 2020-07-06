@@ -1,0 +1,42 @@
+GO(1): go tool for the system
+.LP
+.br
+\l'5i'
+.br
+.LP
+.SH
+USAGE
+.LP
+.LP
+\fC
+.DS L
+
+    usage: Go go-options...
+    usage: Go doc clive/...
+    
+.DE
+\fR
+.LP
+.LP
+.SH
+DESCRIPTION
+.LP
+\fI Go\fR sets the\fC GOPATH\fR and\fC GOBIN\fR variables for the standard
+clive locations and then calls the\fI go\fR command with the given arguments.
+.LP
+.SH
+SOURCE
+.LP
+.IP \(bu
+\fC/zx/bin/rc/Go\fR
+.LP
+.LP
+.LP
+.br
+\l'5i'
+.br
+.LP
+\fB User's manual.\fR\fB Section 1.\fR Copyright © LSUB 2014-2016
+.br
+.br
+

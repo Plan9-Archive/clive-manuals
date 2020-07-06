@@ -1,0 +1,76 @@
+DIR(3): directory entries
+.LP
+.br
+\l'5i'
+.br
+.LP
+.SH
+DESCRIPTION
+.LP
+Files are described by directory entries. Each directory entry is a self-describing
+entity made of attribute/value pairs. Most tools in the system operate
+by first finding a stream of directory entries provided a set of names
+as described in names(3) and then performing some operation(s) on them.
+.LP
+By convention, there are a few attributes that can be expected to exist.
+All their values are strings. Those that imply a numeric value keep the
+value represented as a string. Those that imply a time value correspond
+to the UNIX nanosecond time.
+.LP
+Attributes\fC name\fR,\fC type\fR,\fC mode\fR,\fC size\fR, and\fC mtime\fR
+and those starting with an lowercase rune are expected to persist. All
+other attributes starting with uppercase are not expected to persist in
+the file system and are considered as temporary. The tools in the\fC clive/cmd\fR
+package decorate directory entries with\fC Upath\fR and\fC Rpath\fR, for
+example, to represent the path as given by the user and as relative from
+the path as given by the user.
+.LP
+Attributes\fC path\fR,\fC addr\fR,\fC type\fR, and\fC name\fR will not
+be changed by requests that update attributes. The\fC size\fR attribute
+for directories is also ignored during updates. Depening on permissions,\fC
+mode\fR,\fC size\fR,\fC uid\fR,\fC gid\fR and\fC mtime\fR can be changed;
+the same goes for other attributes added by the user.
+.LP
+Empty attribute names can be used to remove a existing attribute, but it
+is an error to try to remove attributes that cannot be changed by the user.
+Although\fC mode\fR,\fC mtime\fR,\fC size\fR,\fC Uid\fR, and\fC Gid\fR
+can be changed by the user, they cannot be removed.
+.LP
+This is a list of some conventional attributes:
+.LP
+\fC name\fR holds the (base) name of the file\fC path\fR holds the absolute
+path of the file as seen by the user in the name-space\fC addr\fR holds
+the address where to reach the resource.\fC mtime\fR holds the last modification
+time for the file\fC type\fR holds a\fC d\fR for directories, a\fC -\fR
+for files, and other values for other file types.\fC mode\fR holds\fC 0777\fR
+or any other number represented in octal for the file permissions.\fC err\fR
+is present only in entries used to report errors on a file during a find
+request. Entries with this attribute should be considered as errors, not
+as actual entries.\fC uid\fR holds the user id (a string)\fC gid\fR holds
+the group id\fC wuid\fR holds the id of the user who last changed the file
+.LP
+.SH
+SEE ALSO
+.LP
+.IP \(bu
+names(3)
+.IP \(bu
+zx(2)
+.LP
+.LP
+.LP
+.SH
+BUG
+.LP
+.IP \(bu
+The\fC err\fR attribute should be\fC Err\fR.
+.LP
+.LP
+.br
+\l'5i'
+.br
+.LP
+\fB User's manual.\fR\fB Section 3.\fR Copyright © LSUB 2014-2016
+.br
+.br
+
